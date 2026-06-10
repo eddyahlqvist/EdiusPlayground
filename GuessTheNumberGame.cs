@@ -13,8 +13,8 @@ namespace EdiusPlayground
 
         private readonly int _lowNumber = 1;
         private readonly int _highNumber = 100;
-        private readonly int _secretNumber;
 
+        private int _secretNumber;
         private int _amountGuessed;
         private int _score = 100;
         private int _bestScore = 0;
@@ -23,20 +23,28 @@ namespace EdiusPlayground
         private const int GuessCost = 10;
         private const byte MaxTries = 10;
 
-        public GuessTheNumberGame()
-        {
-            _secretNumber = GenerateSecretNumber();
-        }
-
         public void Run()
         {
-            LoadHighScore();
+            string chosenMode = RunModesMenu();
+            if (chosenMode == "1")
+            {
+                LoadHighScore();
 
-            DebugMessage($"Secret Number is {_secretNumber}.");
-            DebugMessage($"Best score is {_bestScore}.");
-            DebugMessage("Reset HighScore with 'c'.");
+                _secretNumber = GenerateSecretNumber();
 
-            RunGame();
+                DebugMessage($"Secret Number is {_secretNumber}.");
+                DebugMessage($"Best score is {_bestScore}.");
+                DebugMessage("Reset HighScore with 'c'.");
+
+                RunGame();
+            }
+
+            else
+            {
+                return;
+            }
+
+            
         }
         private void RunGame()
         {
@@ -167,6 +175,60 @@ namespace EdiusPlayground
                 }
 
                 return playerGuess;
+            }
+        }
+        
+        private void ShowModesMenu()
+        {
+            Console.WriteLine("Guess the Number Game Modes: \n");
+            Console.WriteLine("1. Guess limit set to 10 tries.");
+
+            Console.WriteLine("B. Back.");
+            Console.WriteLine("Q. Quit");
+        }
+
+        private string GetMenuChoice()
+        {
+            Console.Write("Choose an option from the menu: ");
+
+            string? input = Console.ReadLine();
+
+            if (input == null)
+            {
+                return "";
+            }
+
+            Console.WriteLine();
+            return input.Trim().ToLowerInvariant();
+        }
+
+        private string RunModesMenu()
+        {
+            while (true)
+            {
+                ShowModesMenu();
+
+                string choice = GetMenuChoice();
+
+                if (choice == "b")
+                {
+                    return "b"; // back to main menu
+                }
+
+                if (choice == "q")
+                {
+                    // later: signal quit to the whole app
+                    return "q";
+                }
+
+                if (choice == "1")
+                {
+                    return "1";
+                }
+                else
+                {
+                    Console.WriteLine("Please pick an option from the menu.");
+                }
             }
         }
 
