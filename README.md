@@ -1,2 +1,9 @@
-# EdiusPlayground
-General toolbox plus playable game world and stand alone games for learning C#.
+EdiusPlayground
+
+A C# learning project containing:
+- Games
+- Tools
+- A playable world
+- Experiments and programming exercises
+
+Built as a long-term learning project.
