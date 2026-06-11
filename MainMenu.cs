@@ -5,10 +5,13 @@ namespace EdiusPlayground
     internal class MainMenu
     {
         private readonly GameHub _gameHub;
+        private readonly ToolHub _toolHub;
+
         private string _user = "Unknown"; // move ownership to App later
-        public MainMenu(GameHub gameHub)
+        public MainMenu(GameHub gameHub, ToolHub toolHub)
         {
             _gameHub = gameHub;
+            _toolHub = toolHub;
         }
         public void Run()
         {
@@ -56,7 +59,7 @@ namespace EdiusPlayground
                     return false;
 
                 case "4":
-                    Console.WriteLine("Tools are not implemented yet.");
+                    _toolHub.Run();
                     return false;
 
                 case "5":
