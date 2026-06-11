@@ -9,10 +9,16 @@ namespace EdiusPlayground
     {
         private static readonly Random _rnd = new Random();
 
+        enum GameMode
+        {
+            Classic,
+            LimitedTries
+        }
+
         // Game settings
         private readonly int _lowNumber = 1;
         private readonly int _highNumber = 100;
-        private const int GuessCost = 10;
+        private const byte GuessCost = 10;
         private const byte MaxTries = 10;
 
         // Runtime state
@@ -29,18 +35,25 @@ namespace EdiusPlayground
 
         public void Run()
         {
-            string chosenMode = RunModesMenu();
-            if (chosenMode == "1")
+            GameMode chosenMode = RunModesMenu();
+
+            if (chosenMode == GameMode.Classic)
+            {
+                _secretNumber = GenerateSecretNumber();
+                DebugMessage($"Secret Number is {_secretNumber}.");
+                RunGame(chosenMode);
+            }
+
+            if (chosenMode == GameMode.LimitedTries)
             {
                 LoadHighScore();
 
                 _secretNumber = GenerateSecretNumber();
-
                 DebugMessage($"Secret Number is {_secretNumber}.");
                 DebugMessage($"Best score is {_bestScore}.");
                 DebugMessage("Reset HighScore with 'c'.");
 
-                RunGame();
+                RunGame(chosenMode);
             }
 
             else
@@ -50,13 +63,13 @@ namespace EdiusPlayground
 
 
         }
-        private void RunGame()
+        private void RunGame(GameMode chosenMode)
         {
             List<int> guessedNumbers = [];
 
             while (true)
             {
-                int? playerGuess = GetPlayerGuess();
+                int? playerGuess = GetPlayerGuess(chosenMode);
 
                 if (playerGuess == null)
                 {
@@ -64,27 +77,31 @@ namespace EdiusPlayground
                     return;
                 }
 
+
                 int guess = playerGuess.Value;
                 guessedNumbers.Add(guess);
                 _amountGuessed = guessedNumbers.Count;
 
-                if (_amountGuessed > 1)
+                if (chosenMode == GameMode.LimitedTries)
                 {
-                    _score -= GuessCost;
+                    if (_amountGuessed > 1)
+                    {
+                        _score -= GuessCost;
+                    }
+
+                    if (_amountGuessed == MaxTries && guess != _secretNumber)
+                    {
+                        Console.WriteLine("Game Over, you have used all your available tries");
+                        Console.WriteLine($"Your guesses: {string.Join(", ", guessedNumbers)}");
+                        return;
+                    }
                 }
 
-                if (_amountGuessed == MaxTries && guess != _secretNumber)
-                {
-                    Console.WriteLine("Game Over, you have used all your available tries");
-                    Console.WriteLine($"Your guesses: {string.Join(", ", guessedNumbers)}");
-                    return;
-                }
-
-                if (guess < _secretNumber)
+                if (playerGuess < _secretNumber)
                 {
                     Console.WriteLine("Too low, try again.");
                 }
-                else if (guess > _secretNumber)
+                else if (playerGuess > _secretNumber)
                 {
                     Console.WriteLine("Too high, try again.");
                 }
@@ -92,17 +109,20 @@ namespace EdiusPlayground
                 {
                     Console.WriteLine($"Correct! The secret number was {_secretNumber}. Congratulations!");
 
-                    if (_score > _bestScore)
+                    if (chosenMode == GameMode.LimitedTries)
                     {
-                        _bestScore = _score;
-                        SaveHighScore();
+                        if (_score > _bestScore)
+                        {
+                            _bestScore = _score;
+                            SaveHighScore();
 
-                        Console.WriteLine($"New high score: {_bestScore} points!");
-                    }
+                            Console.WriteLine($"New high score: {_bestScore} points!");
+                        }
 
-                    else
-                    {
-                        Console.WriteLine($"Best score: {_bestScore}");
+                        else
+                        {
+                            Console.WriteLine($"Best score: {_bestScore}");
+                        }
                     }
 
                     if (_amountGuessed == 1)
@@ -137,7 +157,7 @@ namespace EdiusPlayground
             }
         }
 
-        private int? GetPlayerGuess()
+        private int? GetPlayerGuess(GameMode chosenMode)
         {
             while (true)
             {
@@ -150,7 +170,7 @@ namespace EdiusPlayground
                     return null;
                 }
 
-                if (IsDebugMode)
+                if (IsDebugMode && chosenMode == GameMode.LimitedTries)
                 {
                     if (input.Trim().Equals("c", StringComparison.OrdinalIgnoreCase))
                     {
@@ -185,13 +205,14 @@ namespace EdiusPlayground
         private void ShowModesMenu()
         {
             Console.WriteLine("Guess the Number Game Modes: \n");
-            Console.WriteLine("1. Guess limit set to 10 tries.");
+            Console.WriteLine("1. Classic.");
+            Console.WriteLine("2. Guess limit set to 10 tries. (HighScore)");
 
             Console.WriteLine("B. Back.");
             Console.WriteLine("Q. Quit");
         }
 
-        private string RunModesMenu()
+        private GameMode RunModesMenu()
         {
             while (true)
             {
@@ -199,20 +220,24 @@ namespace EdiusPlayground
 
                 string choice = MenuHelper.GetMenuChoice();
 
-                if (choice == "b")
-                {
-                    return "b"; // back to main menu
-                }
+                //if (choice == "b")
+                //{
+                //    return "b"; // back to main menu
+                //}
 
-                if (choice == "q")
-                {
-                    // later: signal quit to the whole app
-                    return "q";
-                }
+                //if (choice == "q")
+                //{
+                //    // later: signal quit to the whole app
+                //    return "q";
+                //}
 
                 if (choice == "1")
                 {
-                    return "1";
+                    return GameMode.Classic;
+                }
+                if (choice == "2")
+                {
+                    return GameMode.LimitedTries;
                 }
                 else
                 {
