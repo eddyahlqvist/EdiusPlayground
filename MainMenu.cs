@@ -17,7 +17,7 @@ namespace EdiusPlayground
                 DisplayUser();
                 ShowMainMenu();
 
-                string choice = GetMenuChoice();
+                string choice = MenuHelper.GetMenuChoice();
 
                 if (HandleMenuChoice(choice))
                 {
@@ -25,9 +25,6 @@ namespace EdiusPlayground
                 }
             }
         }
-
-        // TODO: MainMenu and GameHub share menu behavior.
-        // Consider extracting common menu handling later.
 
         private void ShowMainMenu()
         {
@@ -40,23 +37,7 @@ namespace EdiusPlayground
             Console.WriteLine("5. Settings");   // customization for colors, fonts etc
 
             Console.WriteLine("Q. Quit");
-        }
-
-        private string GetMenuChoice()
-        {
-            Console.Write("Choose an option from the menu: ");
-
-            string? input = Console.ReadLine();
-
-            if (input == null)
-            {
-                return "";
-            }
-
-            Console.WriteLine();
-            return input.Trim().ToLowerInvariant();
-            //return Console.ReadLine()?.Trim().ToLowerInvariant() ?? ""; // this is shorthand version of the above, use this later
-        }
+        }        
 
         private bool HandleMenuChoice(string choice)
         {

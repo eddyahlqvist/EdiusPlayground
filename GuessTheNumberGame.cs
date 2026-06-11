@@ -9,19 +9,23 @@ namespace EdiusPlayground
     {
         private static readonly Random _rnd = new Random();
 
-        private const bool IsDebugMode = true;
-
+        // Game settings
         private readonly int _lowNumber = 1;
         private readonly int _highNumber = 100;
+        private const int GuessCost = 10;
+        private const byte MaxTries = 10;
 
+        // Runtime state
         private int _secretNumber;
         private int _amountGuessed;
         private int _score = 100;
         private int _bestScore = 0;
 
+        // Debug
+        private const bool IsDebugMode = true;
+
+        // Persistence
         private const string HighScoreFile = "GTN_highscore.txt";
-        private const int GuessCost = 10;
-        private const byte MaxTries = 10;
 
         public void Run()
         {
@@ -44,7 +48,7 @@ namespace EdiusPlayground
                 return;
             }
 
-            
+
         }
         private void RunGame()
         {
@@ -177,7 +181,7 @@ namespace EdiusPlayground
                 return playerGuess;
             }
         }
-        
+
         private void ShowModesMenu()
         {
             Console.WriteLine("Guess the Number Game Modes: \n");
@@ -187,28 +191,13 @@ namespace EdiusPlayground
             Console.WriteLine("Q. Quit");
         }
 
-        private string GetMenuChoice()
-        {
-            Console.Write("Choose an option from the menu: ");
-
-            string? input = Console.ReadLine();
-
-            if (input == null)
-            {
-                return "";
-            }
-
-            Console.WriteLine();
-            return input.Trim().ToLowerInvariant();
-        }
-
         private string RunModesMenu()
         {
             while (true)
             {
                 ShowModesMenu();
 
-                string choice = GetMenuChoice();
+                string choice = MenuHelper.GetMenuChoice();
 
                 if (choice == "b")
                 {

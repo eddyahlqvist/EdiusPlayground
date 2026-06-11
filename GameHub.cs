@@ -18,7 +18,7 @@ namespace EdiusPlayground
             {
                 ShowGamesMenu();
 
-                string choice = GetMenuChoice();
+                string choice = MenuHelper.GetMenuChoice();
 
                 if (choice == "b")
                 {
@@ -40,21 +40,6 @@ namespace EdiusPlayground
                     Console.WriteLine("Please pick an option from the menu.");
                 }
             }
-        }
-
-        private string GetMenuChoice()
-        {
-            Console.Write("Choose an option from the menu: ");
-
-            string? input = Console.ReadLine();
-
-            if (input == null)
-            {
-                return "";
-            }
-
-            Console.WriteLine();
-            return input.Trim().ToLowerInvariant();
         }
 
         private void ShowGamesMenu()
