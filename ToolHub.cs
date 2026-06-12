@@ -17,28 +17,40 @@ namespace EdiusPlayground
                 ShowToolsMenu();
 
                 string choice = MenuHelper.GetMenuChoice();
+                SystemCommand command = MenuHelper.GetSystemCommand(choice);
 
-                if (choice == "b")
+                if (command == SystemCommand.Back)
                 {
-                    return; // back to main menu
-                }
-
-                if (choice == "q")
-                {
-                    // later: signal quit to the whole app
                     return;
                 }
 
-                else
+                if (command == SystemCommand.Quit)
                 {
-                    Console.WriteLine("Please pick an option from the menu.");
+                    // later: bubble quit
+                    return;
+                }
+
+                switch (choice)
+                {
+                    case "1":
+                        Console.WriteLine("Not implemented yet / Placeholder");
+                        break;
+
+                    default:
+                        Console.WriteLine("Please pick an option from the menu.");
+                        break;
                 }
             }
         }
 
         private void ShowToolsMenu()
         {
-            Console.WriteLine("Tools Menu to be constructed");
+            Console.WriteLine("Tools");
+
+            Console.WriteLine("1. Not implemented yet / Placeholder");
+
+            Console.WriteLine("B. Back");
+            Console.WriteLine("Q. Quit");
         }
     }
 }

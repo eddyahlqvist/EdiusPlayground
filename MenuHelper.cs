@@ -19,5 +19,22 @@ namespace EdiusPlayground
             return input.Trim().ToLowerInvariant();
             //return Console.ReadLine()?.Trim().ToLowerInvariant() ?? ""; // this is shorthand version of the above, use this later
         }
+
+        public static SystemCommand GetSystemCommand(string choice)
+        {
+            choice = choice.Trim().ToLowerInvariant();
+
+            if (choice == "q" || choice == "quit" || choice == "exit")
+            {
+                return SystemCommand.Quit;
+            }
+
+            if (choice == "b" || choice == "back")
+            {
+                return SystemCommand.Back;
+            }
+
+            return SystemCommand.None;
+        }
     }
 }

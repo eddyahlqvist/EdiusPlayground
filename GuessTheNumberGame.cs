@@ -9,7 +9,7 @@ namespace EdiusPlayground
     {
         private static readonly Random _rnd = new Random();
 
-        enum GameMode
+        private enum GameMode
         {
             Classic,
             LimitedTries
@@ -37,30 +37,29 @@ namespace EdiusPlayground
         {
             GameMode chosenMode = RunModesMenu();
 
-            if (chosenMode == GameMode.Classic)
+            switch (chosenMode)
             {
-                _secretNumber = GenerateSecretNumber();
-                DebugMessage($"Secret Number is {_secretNumber}.");
-                RunGame(chosenMode);
+                case GameMode.Classic:
+                    _secretNumber = GenerateSecretNumber();
+                    DebugMessage($"Secret Number is {_secretNumber}.");
+                    RunGame(chosenMode);
+                    return;
+
+                case GameMode.LimitedTries:
+                    LoadHighScore();
+
+                    _secretNumber = GenerateSecretNumber();
+                    DebugMessage($"Secret Number is {_secretNumber}.");
+                    DebugMessage($"Best score is {_bestScore}.");
+                    DebugMessage("Reset HighScore with 'c'.");
+
+                    RunGame(chosenMode);
+                    return;
+
+                default:
+                    throw new InvalidOperationException(
+                        $"Unknown game mode: {chosenMode}");
             }
-
-            if (chosenMode == GameMode.LimitedTries)
-            {
-                LoadHighScore();
-
-                _secretNumber = GenerateSecretNumber();
-                DebugMessage($"Secret Number is {_secretNumber}.");
-                DebugMessage($"Best score is {_bestScore}.");
-                DebugMessage("Reset HighScore with 'c'.");
-
-                RunGame(chosenMode);
-            }
-
-            else
-            {
-                return;
-            }
-
 
         }
         private void RunGame(GameMode chosenMode)
@@ -231,17 +230,17 @@ namespace EdiusPlayground
                 //    return "q";
                 //}
 
-                if (choice == "1")
+                switch (choice)
                 {
-                    return GameMode.Classic;
-                }
-                if (choice == "2")
-                {
-                    return GameMode.LimitedTries;
-                }
-                else
-                {
-                    Console.WriteLine("Please pick an option from the menu.");
+                    case "1":
+                        return GameMode.Classic;
+
+                    case "2":
+                        return GameMode.LimitedTries;
+
+                    default: 
+                        Console.WriteLine("Please pick an option from the menu.");
+                        continue;
                 }
             }
         }

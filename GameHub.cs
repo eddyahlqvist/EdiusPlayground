@@ -6,7 +6,7 @@ namespace EdiusPlayground
     internal class GameHub
     {
         private readonly GuessTheNumberGame _guessTheNumberGame = new();
-        
+
         public void Run()
         {
             RunGamesMenu();
@@ -19,25 +19,28 @@ namespace EdiusPlayground
                 ShowGamesMenu();
 
                 string choice = MenuHelper.GetMenuChoice();
+                SystemCommand command = MenuHelper.GetSystemCommand(choice);
 
-                if (choice == "b")
+                if (command == SystemCommand.Back)
                 {
-                    return; // back to main menu
-                }
-
-                if (choice == "q")
-                {
-                    // later: signal quit to the whole app
                     return;
                 }
 
-                if (choice == "1")
+                if (command == SystemCommand.Quit)
                 {
-                    _guessTheNumberGame.Run();
+                    // later: bubble quit
+                    return;
                 }
-                else
+
+                switch (choice)
                 {
-                    Console.WriteLine("Please pick an option from the menu.");
+                    case "1":
+                        _guessTheNumberGame.Run();
+                        break;
+
+                    default:
+                        Console.WriteLine("Please pick an option from the menu.");
+                        break;
                 }
             }
         }

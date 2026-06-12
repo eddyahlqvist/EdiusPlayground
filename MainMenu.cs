@@ -21,11 +21,46 @@ namespace EdiusPlayground
                 ShowMainMenu();
 
                 string choice = MenuHelper.GetMenuChoice();
+                SystemCommand command = MenuHelper.GetSystemCommand(choice);
 
-                if (HandleMenuChoice(choice))
+                if (command == SystemCommand.Back)
                 {
+                    Console.WriteLine("You can't go back from the main menu. Use 'q' to exit.");
+                    continue;
+                }
+
+                if (command == SystemCommand.Quit)
+                {
+                    Console.WriteLine($"{_user} is signing out. Farewell!");
                     return;
                 }
+
+                switch (choice)
+                {
+                    case "1":
+                        _user = SetUser();
+                        break;
+
+                    case "2":
+                        Console.WriteLine("Playable world is not implemented yet.");
+                        break;
+
+                    case "3":
+                        _gameHub.Run();
+                        break;
+
+                    case "4":
+                        _toolHub.Run();
+                        break;
+
+                    case "5":
+                        Console.WriteLine("Settings are not implemented yet.");
+                        break;
+                   
+                    default:
+                        Console.WriteLine("Please pick an option from the menu.");
+                        break;
+                }                
             }
         }
 
@@ -41,39 +76,6 @@ namespace EdiusPlayground
 
             Console.WriteLine("Q. Quit");
         }        
-
-        private bool HandleMenuChoice(string choice)
-        {
-            switch (choice)
-            {
-                case "1":
-                    _user = SetUser();
-                    return false;
-
-                case "2":
-                    Console.WriteLine("Playable world is not implemented yet.");
-                    return false;
-
-                case "3":
-                    _gameHub.Run();
-                    return false;
-
-                case "4":
-                    _toolHub.Run();
-                    return false;
-
-                case "5":
-                    Console.WriteLine("Settings are not implemented yet.");
-                    return false;
-
-                case "q":
-                    return true;
-
-                default:
-                    Console.WriteLine("Please pick an option from the menu.");
-                    return false;
-            }
-        }
 
         private void DisplayUser()
         {
