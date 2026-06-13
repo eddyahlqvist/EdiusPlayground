@@ -15,6 +15,18 @@ namespace EdiusPlayground
             LimitedTries
         }
 
+        private readonly struct ModeMenuResult
+        {
+            public GameMode? Mode { get; }
+            public SystemCommand Command { get; }
+
+            public ModeMenuResult(GameMode? mode, SystemCommand command)
+            {
+                Mode = mode;
+                Command = command;
+            }
+        }
+
         // Game settings
         private readonly int _lowNumber = 1;
         private readonly int _highNumber = 100;
@@ -35,7 +47,25 @@ namespace EdiusPlayground
 
         public void Run()
         {
-            GameMode chosenMode = RunModesMenu();
+            ModeMenuResult result = RunModesMenu();
+
+            if (result.Command == SystemCommand.Back)
+            {
+                return;
+            }
+
+            if (result.Command == SystemCommand.Quit)
+            {
+                // later: bubble quit
+                return;
+            }
+
+            if (result.Mode == null)
+            {
+                return;
+            }
+
+            GameMode chosenMode = result.Mode.Value;
 
             switch (chosenMode)
             {
@@ -57,10 +87,8 @@ namespace EdiusPlayground
                     return;
 
                 default:
-                    throw new InvalidOperationException(
-                        $"Unknown game mode: {chosenMode}");
+                    throw new InvalidOperationException($"Unknown game mode: {chosenMode}");
             }
-
         }
         private void RunGame(GameMode chosenMode)
         {
@@ -211,34 +239,29 @@ namespace EdiusPlayground
             Console.WriteLine("Q. Quit");
         }
 
-        private GameMode RunModesMenu()
+        private ModeMenuResult RunModesMenu()
         {
             while (true)
             {
                 ShowModesMenu();
 
                 string choice = MenuHelper.GetMenuChoice();
+                SystemCommand command = MenuHelper.GetSystemCommand(choice);
 
-                //if (choice == "b")
-                //{
-                //    return "b"; // back to main menu
-                //}
-
-                //if (choice == "q")
-                //{
-                //    // later: signal quit to the whole app
-                //    return "q";
-                //}
+                if (command != SystemCommand.None)
+                {
+                    return new ModeMenuResult(null, command);
+                }
 
                 switch (choice)
                 {
                     case "1":
-                        return GameMode.Classic;
+                        return new ModeMenuResult(GameMode.Classic, SystemCommand.None);
 
                     case "2":
-                        return GameMode.LimitedTries;
+                        return new ModeMenuResult(GameMode.LimitedTries, SystemCommand.None);
 
-                    default: 
+                    default:
                         Console.WriteLine("Please pick an option from the menu.");
                         continue;
                 }
@@ -266,4 +289,3 @@ namespace EdiusPlayground
         }
     }
 }
-
