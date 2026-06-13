@@ -61,14 +61,13 @@ namespace EdiusPlayground
         {
             ModeMenuResult result = RunModesMenu();
 
-            if (result.Command == SystemCommand.Back)
+            switch (result.Command)
             {
-                return SystemCommand.None;
-            }
+                case SystemCommand.Back:
+                    return SystemCommand.Back;
 
-            if (result.Command == SystemCommand.Quit)
-            {
-                return SystemCommand.Quit;
+                case SystemCommand.Quit:
+                    return SystemCommand.Quit;
             }
 
             if (result.Mode == null)
@@ -82,38 +81,20 @@ namespace EdiusPlayground
             {
                 case GameMode.Classic:
                     {
-                        _amountGuessed = 0;
-                        _secretNumber = GenerateSecretNumber();
-                        DebugMessage($"Secret Number is {_secretNumber}.");
-
-                        SystemCommand command = RunGame(chosenMode);
-
-                        if (command != SystemCommand.None)
-                        {
-                            return command;
-                        }
-
-                        return SystemCommand.None;
+                        PrepareNewRound();
+                        return RunGame(chosenMode);
                     }
+
                 case GameMode.LimitedTries:
                     {
                         LoadHighScore();
                         _score = 100;
-                        _amountGuessed = 0;
 
-                        _secretNumber = GenerateSecretNumber();
-                        DebugMessage($"Secret Number is {_secretNumber}.");
                         DebugMessage($"Best score is {_bestScore}.");
                         DebugMessage("Reset HighScore with 'c'.");
 
-                        SystemCommand command = RunGame(chosenMode);
-
-                        if (command != SystemCommand.None)
-                        {
-                            return command;
-                        }
-
-                        return SystemCommand.None;
+                        PrepareNewRound();
+                        return RunGame(chosenMode);
                     }
                 default:
                     throw new InvalidOperationException($"Unknown game mode: {chosenMode}");
@@ -125,18 +106,17 @@ namespace EdiusPlayground
 
             while (true)
             {
-                GuessResult result = GetPlayerGuess(chosenMode);                
+                GuessResult result = GetPlayerGuess(chosenMode);
 
-                if (result.Command == SystemCommand.Back)
+                switch (result.Command)
                 {
-                    Console.WriteLine("Returning to menu.");
-                    return SystemCommand.Back;
-                }
+                    case SystemCommand.Back:
+                        Console.WriteLine("Returning to menu.");
+                        return SystemCommand.Back;
 
-                if (result.Command == SystemCommand.Quit)
-                {
-                    Console.WriteLine("Thanks for playing!");
-                    return SystemCommand.Quit;
+                    case SystemCommand.Quit:
+                        Console.WriteLine("Thanks for playing!");
+                        return SystemCommand.Quit;
                 }
 
                 if (result.Guess == null)
@@ -144,7 +124,7 @@ namespace EdiusPlayground
                     return SystemCommand.None;
                 }
 
-                int guess = result.Guess.Value;                
+                int guess = result.Guess.Value;
 
                 guessedNumbers.Add(guess);
                 _amountGuessed = guessedNumbers.Count;
@@ -248,14 +228,14 @@ namespace EdiusPlayground
                 }
 
                 SystemCommand command = MenuHelper.GetSystemCommand(input);
-                if (command == SystemCommand.Quit)
+                switch (command)
                 {
-                    return new GuessResult(null, SystemCommand.Quit);
-                }
+                    case SystemCommand.Quit:
+                        return new GuessResult(null, SystemCommand.Quit);
 
-                if (command == SystemCommand.Back)
-                {
-                    return new GuessResult(null, SystemCommand.Back);
+                    case SystemCommand.Back:
+                        return new GuessResult(null, SystemCommand.Back);
+
                 }
 
                 if (!int.TryParse(input, out int playerGuess))
@@ -270,7 +250,7 @@ namespace EdiusPlayground
                     continue;
                 }
 
-                return new GuessResult (playerGuess, SystemCommand.None);
+                return new GuessResult(playerGuess, SystemCommand.None);
             }
         }
 
@@ -311,6 +291,13 @@ namespace EdiusPlayground
                         continue;
                 }
             }
+        }
+
+        private void PrepareNewRound()
+        {
+            _amountGuessed = 0;
+            _secretNumber = GenerateSecretNumber();
+            DebugMessage($"Secret Number is {_secretNumber}.");
         }
 
         private void LoadHighScore()
