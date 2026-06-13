@@ -5,6 +5,7 @@ namespace EdiusPlayground
 {
     internal class ToolHub
     {
+        private readonly RandomNumberTool _randomNumberGenerator = new();
         public void Run()
         {
             RunToolsMenu();
@@ -33,7 +34,7 @@ namespace EdiusPlayground
                 switch (choice)
                 {
                     case "1":
-                        Console.WriteLine("Not implemented yet / Placeholder");
+                        _randomNumberGenerator.Run();
                         break;
 
                     default:
@@ -47,7 +48,7 @@ namespace EdiusPlayground
         {
             Console.WriteLine("Tools");
 
-            Console.WriteLine("1. Not implemented yet / Placeholder");
+            Console.WriteLine("1. Random Number Generator");
 
             Console.WriteLine("B. Back");
             Console.WriteLine("Q. Quit");

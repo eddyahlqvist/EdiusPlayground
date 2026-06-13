@@ -36,7 +36,7 @@ namespace EdiusPlayground
         // Runtime state
         private int _secretNumber;
         private int _amountGuessed;
-        private int _score = 100;
+        private int _score;
         private int _bestScore = 0;
 
         // Debug
@@ -70,6 +70,7 @@ namespace EdiusPlayground
             switch (chosenMode)
             {
                 case GameMode.Classic:
+                    _amountGuessed = 0;
                     _secretNumber = GenerateSecretNumber();
                     DebugMessage($"Secret Number is {_secretNumber}.");
                     RunGame(chosenMode);
@@ -77,6 +78,8 @@ namespace EdiusPlayground
 
                 case GameMode.LimitedTries:
                     LoadHighScore();
+                    _score = 100;
+                    _amountGuessed = 0;
 
                     _secretNumber = GenerateSecretNumber();
                     DebugMessage($"Secret Number is {_secretNumber}.");
@@ -177,8 +180,7 @@ namespace EdiusPlayground
         {
             if (IsDebugMode)
             {
-                Console.BackgroundColor = ConsoleColor.Blue;
-                Console.ForegroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine($"DEBUG Info: {message}");
                 Console.ResetColor();
             }
@@ -236,7 +238,7 @@ namespace EdiusPlayground
             Console.WriteLine("2. Guess limit set to 10 tries. (HighScore)");
 
             Console.WriteLine("B. Back.");
-            Console.WriteLine("Q. Quit");
+            Console.WriteLine("Q. Quit.");
         }
 
         private ModeMenuResult RunModesMenu()
