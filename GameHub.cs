@@ -7,12 +7,17 @@ namespace EdiusPlayground
     {
         private readonly GuessTheNumberGame _guessTheNumberGame = new();
 
-        public void Run()
+        public SystemCommand Run()
         {
-            RunGamesMenu();
+            SystemCommand returnCommand = RunGamesMenu();
+            if (returnCommand == SystemCommand.Quit)
+            {
+                return SystemCommand.Quit;
+            }
+            return SystemCommand.None;
         }
 
-        private void RunGamesMenu()
+        private SystemCommand RunGamesMenu()
         {
             while (true)
             {
@@ -23,19 +28,22 @@ namespace EdiusPlayground
 
                 if (command == SystemCommand.Back)
                 {
-                    return;
+                    return SystemCommand.None;
                 }
 
                 if (command == SystemCommand.Quit)
                 {
-                    // later: bubble quit
-                    return;
+                    return SystemCommand.Quit;
                 }
 
                 switch (choice)
                 {
                     case "1":
-                        _guessTheNumberGame.Run();
+                        SystemCommand returnCommand = _guessTheNumberGame.Run();
+                        if (returnCommand == SystemCommand.Quit)
+                        {
+                            return SystemCommand.Quit;
+                        }
                         break;
 
                     default:

@@ -29,30 +29,31 @@ namespace EdiusPlayground
             }
         }
 
-        public void Run()
+        public SystemCommand Run()
         {
             GeneratorMenuResult result = RunRandomNumberMenu();
 
             if (result.Command == SystemCommand.Back)
             {
-                return;
+                return SystemCommand.None;
             }
 
             if (result.Command == SystemCommand.Quit)
             {
-                // later: bubble quit
-                return;
+                return SystemCommand.Quit;
             }
 
             if (result.Mode == null)
             {
-                return;
+                return SystemCommand.None;
             }
 
             GeneratorMode chosenMode = result.Mode.Value;
 
             RunGenerator(chosenMode);
             Console.WriteLine($"Your random number is: {_randomNumber}");
+
+            return SystemCommand.None;
         }
 
         private void RunGenerator(GeneratorMode chosenMode)
@@ -76,6 +77,7 @@ namespace EdiusPlayground
             if (chosenMode == GeneratorMode.Custom)
             {
                 // will soon start working on this
+                Console.WriteLine("Currently not working");
                 return;
             }
         }

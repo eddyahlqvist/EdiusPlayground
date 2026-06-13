@@ -13,7 +13,7 @@ namespace EdiusPlayground
             _gameHub = gameHub;
             _toolHub = toolHub;
         }
-        public void Run()
+        public SystemCommand Run()
         {
             while (true)
             {
@@ -32,7 +32,7 @@ namespace EdiusPlayground
                 if (command == SystemCommand.Quit)
                 {
                     Console.WriteLine($"{_user} is signing out. Farewell!");
-                    return;
+                    return SystemCommand.Quit;
                 }
 
                 switch (choice)
@@ -46,12 +46,24 @@ namespace EdiusPlayground
                         break;
 
                     case "3":
-                        _gameHub.Run();
-                        break;
+                        {
+                            SystemCommand returnCommand = _gameHub.Run();
+                            if (returnCommand == SystemCommand.Quit)
+                            {
+                                return SystemCommand.Quit;
+                            }
+                            break;
+                        }
 
                     case "4":
-                        _toolHub.Run();
-                        break;
+                        {
+                            SystemCommand returnCommand = _toolHub.Run();
+                            if (returnCommand == SystemCommand.Quit)
+                            {
+                                return SystemCommand.Quit;
+                            }
+                            break;
+                        }
 
                     case "5":
                         Console.WriteLine("Settings are not implemented yet.");

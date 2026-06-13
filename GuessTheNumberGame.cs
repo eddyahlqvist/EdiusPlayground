@@ -27,6 +27,18 @@ namespace EdiusPlayground
             }
         }
 
+        private readonly struct GuessResult
+        {
+            public int? Guess { get; }
+            public SystemCommand Command { get; }
+
+            public GuessResult(int? guess, SystemCommand command)
+            {
+                Guess = guess;
+                Command = command;
+            }
+        }
+
         // Game settings
         private readonly int _lowNumber = 1;
         private readonly int _highNumber = 100;
@@ -45,24 +57,23 @@ namespace EdiusPlayground
         // Persistence
         private const string HighScoreFile = "GTN_highscore.txt";
 
-        public void Run()
+        public SystemCommand Run()
         {
             ModeMenuResult result = RunModesMenu();
 
             if (result.Command == SystemCommand.Back)
             {
-                return;
+                return SystemCommand.None;
             }
 
             if (result.Command == SystemCommand.Quit)
             {
-                // later: bubble quit
-                return;
+                return SystemCommand.Quit;
             }
 
             if (result.Mode == null)
             {
-                return;
+                return SystemCommand.None;
             }
 
             GameMode chosenMode = result.Mode.Value;
@@ -70,45 +81,71 @@ namespace EdiusPlayground
             switch (chosenMode)
             {
                 case GameMode.Classic:
-                    _amountGuessed = 0;
-                    _secretNumber = GenerateSecretNumber();
-                    DebugMessage($"Secret Number is {_secretNumber}.");
-                    RunGame(chosenMode);
-                    return;
+                    {
+                        _amountGuessed = 0;
+                        _secretNumber = GenerateSecretNumber();
+                        DebugMessage($"Secret Number is {_secretNumber}.");
 
+                        SystemCommand command = RunGame(chosenMode);
+
+                        if (command != SystemCommand.None)
+                        {
+                            return command;
+                        }
+
+                        return SystemCommand.None;
+                    }
                 case GameMode.LimitedTries:
-                    LoadHighScore();
-                    _score = 100;
-                    _amountGuessed = 0;
+                    {
+                        LoadHighScore();
+                        _score = 100;
+                        _amountGuessed = 0;
 
-                    _secretNumber = GenerateSecretNumber();
-                    DebugMessage($"Secret Number is {_secretNumber}.");
-                    DebugMessage($"Best score is {_bestScore}.");
-                    DebugMessage("Reset HighScore with 'c'.");
+                        _secretNumber = GenerateSecretNumber();
+                        DebugMessage($"Secret Number is {_secretNumber}.");
+                        DebugMessage($"Best score is {_bestScore}.");
+                        DebugMessage("Reset HighScore with 'c'.");
 
-                    RunGame(chosenMode);
-                    return;
+                        SystemCommand command = RunGame(chosenMode);
 
+                        if (command != SystemCommand.None)
+                        {
+                            return command;
+                        }
+
+                        return SystemCommand.None;
+                    }
                 default:
                     throw new InvalidOperationException($"Unknown game mode: {chosenMode}");
             }
         }
-        private void RunGame(GameMode chosenMode)
+        private SystemCommand RunGame(GameMode chosenMode)
         {
             List<int> guessedNumbers = [];
 
             while (true)
             {
-                int? playerGuess = GetPlayerGuess(chosenMode);
+                GuessResult result = GetPlayerGuess(chosenMode);                
 
-                if (playerGuess == null)
+                if (result.Command == SystemCommand.Back)
                 {
-                    Console.WriteLine("Thanks for playing!");
-                    return;
+                    Console.WriteLine("Returning to menu.");
+                    return SystemCommand.Back;
                 }
 
+                if (result.Command == SystemCommand.Quit)
+                {
+                    Console.WriteLine("Thanks for playing!");
+                    return SystemCommand.Quit;
+                }
 
-                int guess = playerGuess.Value;
+                if (result.Guess == null)
+                {
+                    return SystemCommand.None;
+                }
+
+                int guess = result.Guess.Value;                
+
                 guessedNumbers.Add(guess);
                 _amountGuessed = guessedNumbers.Count;
 
@@ -123,15 +160,15 @@ namespace EdiusPlayground
                     {
                         Console.WriteLine("Game Over, you have used all your available tries");
                         Console.WriteLine($"Your guesses: {string.Join(", ", guessedNumbers)}");
-                        return;
+                        return SystemCommand.None;
                     }
                 }
 
-                if (playerGuess < _secretNumber)
+                if (guess < _secretNumber)
                 {
                     Console.WriteLine("Too low, try again.");
                 }
-                else if (playerGuess > _secretNumber)
+                else if (guess > _secretNumber)
                 {
                     Console.WriteLine("Too high, try again.");
                 }
@@ -158,14 +195,14 @@ namespace EdiusPlayground
                     if (_amountGuessed == 1)
                     {
                         Console.WriteLine("You beat the game on your first try! Unbelievable.");
-                        return;
+                        return SystemCommand.None;
                     }
 
                     else
                     {
                         Console.WriteLine($"You beat the game in {_amountGuessed} tries.");
                         Console.WriteLine($"Your guesses: {string.Join(", ", guessedNumbers)}");
-                        return;
+                        return SystemCommand.None;
                     }
                 }
             }
@@ -186,17 +223,17 @@ namespace EdiusPlayground
             }
         }
 
-        private int? GetPlayerGuess(GameMode chosenMode)
+        private GuessResult GetPlayerGuess(GameMode chosenMode)
         {
             while (true)
             {
-                Console.Write($"Enter a number between {_lowNumber} and {_highNumber} or 'q' to quit. ");
+                Console.Write($"Enter a number between {_lowNumber} and {_highNumber}. 'B' to go back or 'Q' to quit. ");
 
                 string? input = Console.ReadLine();
 
                 if (input == null)
                 {
-                    return null;
+                    return new GuessResult(null, SystemCommand.Back);
                 }
 
                 if (IsDebugMode && chosenMode == GameMode.LimitedTries)
@@ -210,24 +247,30 @@ namespace EdiusPlayground
                     }
                 }
 
-                if (input.Trim().Equals("q", StringComparison.OrdinalIgnoreCase))
+                SystemCommand command = MenuHelper.GetSystemCommand(input);
+                if (command == SystemCommand.Quit)
                 {
-                    return null;
+                    return new GuessResult(null, SystemCommand.Quit);
+                }
+
+                if (command == SystemCommand.Back)
+                {
+                    return new GuessResult(null, SystemCommand.Back);
                 }
 
                 if (!int.TryParse(input, out int playerGuess))
                 {
-                    Console.WriteLine("Please enter a whole number or 'q' to quit.");
+                    Console.WriteLine("Please enter a whole number. 'B' to go back or 'Q' to quit.");
                     continue;
                 }
 
                 if (playerGuess < _lowNumber || playerGuess > _highNumber)
                 {
-                    Console.WriteLine($"Please enter a number between {_lowNumber} and {_highNumber}.");
+                    Console.WriteLine($"Please enter a number between {_lowNumber} and {_highNumber}. 'B' to go back or 'Q' to quit.");
                     continue;
                 }
 
-                return playerGuess;
+                return new GuessResult (playerGuess, SystemCommand.None);
             }
         }
 

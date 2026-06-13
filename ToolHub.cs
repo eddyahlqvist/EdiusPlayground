@@ -5,13 +5,18 @@ namespace EdiusPlayground
 {
     internal class ToolHub
     {
-        private readonly RandomNumberTool _randomNumberGenerator = new();
-        public void Run()
+        private readonly RandomNumberTool _randomNumberTool = new();
+        public SystemCommand Run()
         {
-            RunToolsMenu();
+            SystemCommand returnCommand = RunToolsMenu();
+            if (returnCommand == SystemCommand.Quit)
+            {
+                return SystemCommand.Quit;
+            }
+            return SystemCommand.None;
         }
 
-        private void RunToolsMenu()
+        private SystemCommand RunToolsMenu()
         {
             while (true)
             {
@@ -22,19 +27,22 @@ namespace EdiusPlayground
 
                 if (command == SystemCommand.Back)
                 {
-                    return;
+                    return SystemCommand.None;
                 }
 
                 if (command == SystemCommand.Quit)
                 {
-                    // later: bubble quit
-                    return;
+                    return SystemCommand.Quit;
                 }
 
                 switch (choice)
                 {
                     case "1":
-                        _randomNumberGenerator.Run();
+                        SystemCommand returnCommand = _randomNumberTool.Run();
+                        if (returnCommand == SystemCommand.Quit)
+                        {
+                            return SystemCommand.Quit;
+                        }
                         break;
 
                     default:
