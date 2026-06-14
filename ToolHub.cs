@@ -54,12 +54,12 @@ namespace EdiusPlayground
 
         private void ShowToolsMenu()
         {
-            Console.WriteLine("Tools");
+            Console.WriteLine("Tools\n");
 
             Console.WriteLine("1. Random Number Generator");
 
             Console.WriteLine("B. Back");
-            Console.WriteLine("Q. Quit");
+            Console.WriteLine("Q. Quit\n");
         }
     }
 }

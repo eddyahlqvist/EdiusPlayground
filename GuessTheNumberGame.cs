@@ -261,7 +261,7 @@ namespace EdiusPlayground
             Console.WriteLine("2. Guess limit set to 10 tries. (HighScore)");
 
             Console.WriteLine("B. Back.");
-            Console.WriteLine("Q. Quit.");
+            Console.WriteLine("Q. Quit.\n");
         }
 
         private ModeMenuResult RunModesMenu()

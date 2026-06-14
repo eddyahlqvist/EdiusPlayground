@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 
 namespace EdiusPlayground
 {
     internal class RandomNumberTool
     {
         private static readonly Random _rnd = new Random();
+
+        private const int LowestAllowedNumber = -1000000000;
+        private const int HighestAllowedNumber = 1000000000;
 
         private int _lowNumber;
         private int _highNumber;
@@ -51,7 +56,7 @@ namespace EdiusPlayground
             GeneratorMode chosenMode = result.Mode.Value;
 
             RunGenerator(chosenMode);
-            Console.WriteLine($"Your random number is: {_randomNumber}");
+            Console.WriteLine($"Your random number is: {_randomNumber}\n");
 
             return SystemCommand.None;
         }
@@ -76,12 +81,59 @@ namespace EdiusPlayground
 
             if (chosenMode == GeneratorMode.Custom)
             {
-                // will soon start working on this
-                Console.WriteLine("Currently not working");
+                Console.WriteLine("Enter the lower number: ");
+                _lowNumber = GetUserNumber();
+
+                while (true)
+                {
+                    Console.WriteLine("Enter the higher number: ");
+                    _highNumber = GetUserNumber();
+
+                    if (_highNumber <= _lowNumber)
+                    {
+                        Console.WriteLine($"Please enter a number that's higher than {_lowNumber}.");
+                        continue;
+                    }
+
+                    break;
+                }
+
+                _randomNumber = GenerateRandomNumber();
                 return;
             }
         }
 
+        private int GetUserNumber()
+        {
+            while (true)
+            {
+                string input = Console.ReadLine() ?? "";
+
+                if (!int.TryParse(input, out int number))
+                {
+                    Console.WriteLine("Please enter a number.");
+                    continue;
+                }
+
+                if (!ReviewNumber(number))
+                {
+                    continue;
+                }
+
+                return number;
+            }
+        }
+
+        private bool ReviewNumber(int userNumber)
+        {
+            if (userNumber < LowestAllowedNumber || userNumber > HighestAllowedNumber)
+            {
+                Console.WriteLine($"Pick a number between {LowestAllowedNumber} and {HighestAllowedNumber}.");
+                return false;
+            }
+
+            return true;
+        }
 
         private int GenerateRandomNumber()
         {
@@ -129,7 +181,7 @@ namespace EdiusPlayground
             Console.WriteLine("3. Custom.");
 
             Console.WriteLine("B. Back.");
-            Console.WriteLine("Q. Quit.");
+            Console.WriteLine("Q. Quit.\n");
         }
     }
 }

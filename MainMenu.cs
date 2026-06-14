@@ -86,7 +86,7 @@ namespace EdiusPlayground
             Console.WriteLine("4. Tools");
             Console.WriteLine("5. Settings");   // customization for colors, fonts etc
 
-            Console.WriteLine("Q. Quit");
+            Console.WriteLine("Q. Quit\n");
         }        
 
         private void DisplayUser()

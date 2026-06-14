@@ -55,12 +55,12 @@ namespace EdiusPlayground
 
         private void ShowGamesMenu()
         {
-            Console.WriteLine("Games");
+            Console.WriteLine("Games\n");
 
             Console.WriteLine("1. Guess the Number");
 
             Console.WriteLine("B. Back");
-            Console.WriteLine("Q. Quit");
+            Console.WriteLine("Q. Quit\n");
         }
     }
 }
