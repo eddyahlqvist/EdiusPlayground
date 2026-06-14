@@ -52,6 +52,11 @@ namespace EdiusPlayground
                             {
                                 return SystemCommand.Quit;
                             }
+
+                            if (returnCommand == SystemCommand.Back)
+                            {
+                                return SystemCommand.None;
+                            }
                             break;
                         }
 
@@ -61,6 +66,11 @@ namespace EdiusPlayground
                             if (returnCommand == SystemCommand.Quit)
                             {
                                 return SystemCommand.Quit;
+                            }
+
+                            if (returnCommand == SystemCommand.Back)
+                            {
+                                return SystemCommand.None;
                             }
                             break;
                         }

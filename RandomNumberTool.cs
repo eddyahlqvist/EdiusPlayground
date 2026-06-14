@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.CompilerServices;
 
 namespace EdiusPlayground
 {
@@ -40,7 +38,7 @@ namespace EdiusPlayground
 
             if (result.Command == SystemCommand.Back)
             {
-                return SystemCommand.None;
+                return SystemCommand.Back;
             }
 
             if (result.Command == SystemCommand.Quit)
@@ -58,48 +56,45 @@ namespace EdiusPlayground
             RunGenerator(chosenMode);
             Console.WriteLine($"Your random number is: {_randomNumber}\n");
 
-            return SystemCommand.None;
+            return SystemCommand.Back;
         }
 
         private void RunGenerator(GeneratorMode chosenMode)
         {
-            if (chosenMode == GeneratorMode.LowRange)
+            switch (chosenMode)
             {
-                _lowNumber = 1;
-                _highNumber = 10;
-                _randomNumber = GenerateRandomNumber();
-                return;
-            }
+                case GeneratorMode.LowRange:
+                    _lowNumber = 1;
+                    _highNumber = 10;
+                    _randomNumber = GenerateRandomNumber();
+                    return;
 
-            if (chosenMode == GeneratorMode.HighRange)
-            {
-                _lowNumber = 1;
-                _highNumber = 100;
-                _randomNumber = GenerateRandomNumber();
-                return;
-            }
+                case GeneratorMode.HighRange:
+                    _lowNumber = 1;
+                    _highNumber = 100;
+                    _randomNumber = GenerateRandomNumber();
+                    return;
 
-            if (chosenMode == GeneratorMode.Custom)
-            {
-                Console.WriteLine("Enter the lower number: ");
-                _lowNumber = GetUserNumber();
+                case GeneratorMode.Custom:
+                    Console.WriteLine("Enter the lower number: ");
+                    _lowNumber = GetUserNumber();
 
-                while (true)
-                {
-                    Console.WriteLine("Enter the higher number: ");
-                    _highNumber = GetUserNumber();
-
-                    if (_highNumber <= _lowNumber)
+                    while (true)
                     {
-                        Console.WriteLine($"Please enter a number that's higher than {_lowNumber}.");
-                        continue;
+                        Console.WriteLine("Enter the higher number: ");
+                        _highNumber = GetUserNumber();
+
+                        if (_highNumber <= _lowNumber)
+                        {
+                            Console.WriteLine($"Please enter a number that's higher than {_lowNumber}.");
+                            continue;
+                        }
+
+                        break;
                     }
 
-                    break;
-                }
-
-                _randomNumber = GenerateRandomNumber();
-                return;
+                    _randomNumber = GenerateRandomNumber();
+                    return;
             }
         }
 

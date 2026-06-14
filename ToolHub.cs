@@ -13,7 +13,13 @@ namespace EdiusPlayground
             {
                 return SystemCommand.Quit;
             }
-            return SystemCommand.None;
+
+            if (returnCommand == SystemCommand.Back)
+            {
+                return SystemCommand.None;
+            }
+
+            return SystemCommand.Back;
         }
 
         private SystemCommand RunToolsMenu()
@@ -25,23 +31,28 @@ namespace EdiusPlayground
                 string choice = MenuHelper.GetMenuChoice();
                 SystemCommand command = MenuHelper.GetSystemCommand(choice);
 
-                if (command == SystemCommand.Back)
+                switch (command)
                 {
-                    return SystemCommand.None;
-                }
+                    case SystemCommand.Quit:
+                        return SystemCommand.Quit;
 
-                if (command == SystemCommand.Quit)
-                {
-                    return SystemCommand.Quit;
-                }
+                    case SystemCommand.Back:
+                        return SystemCommand.Back;
+                }                
 
                 switch (choice)
                 {
                     case "1":
+                        //return _randomNumberTool.Run();
                         SystemCommand returnCommand = _randomNumberTool.Run();
                         if (returnCommand == SystemCommand.Quit)
                         {
                             return SystemCommand.Quit;
+                        }
+
+                        if (returnCommand == SystemCommand.Back)
+                        {
+                            continue;
                         }
                         break;
 
