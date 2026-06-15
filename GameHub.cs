@@ -10,10 +10,16 @@ namespace EdiusPlayground
         public SystemCommand Run()
         {
             SystemCommand returnCommand = RunGamesMenu();
-            if (returnCommand == SystemCommand.Quit)
+
+            switch (returnCommand)
             {
-                return SystemCommand.Quit;
+                case SystemCommand.Back:
+                    return SystemCommand.None;
+
+                case SystemCommand.Quit:
+                    return SystemCommand.Quit;
             }
+
             return SystemCommand.None;
         }
 
@@ -26,20 +32,25 @@ namespace EdiusPlayground
                 string choice = MenuHelper.GetMenuChoice();
                 SystemCommand command = MenuHelper.GetSystemCommand(choice);
 
-                if (command == SystemCommand.Back)
+                switch (command)
                 {
-                    return SystemCommand.None;
-                }
+                    case SystemCommand.Back:
+                        return SystemCommand.Back;
 
-                if (command == SystemCommand.Quit)
-                {
-                    return SystemCommand.Quit;
+                    case SystemCommand.Quit:
+                        return SystemCommand.Quit;
                 }
 
                 switch (choice)
                 {
                     case "1":
                         SystemCommand returnCommand = _guessTheNumberGame.Run();
+
+                        if (returnCommand == SystemCommand.Back)
+                        {
+                            continue;
+                        }
+
                         if (returnCommand == SystemCommand.Quit)
                         {
                             return SystemCommand.Quit;
@@ -55,7 +66,8 @@ namespace EdiusPlayground
 
         private void ShowGamesMenu()
         {
-            Console.WriteLine("Games\n");
+            Console.WriteLine();
+            Console.WriteLine("== Games ==\n");
 
             Console.WriteLine("1. Guess the Number");
 

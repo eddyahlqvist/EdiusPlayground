@@ -16,15 +16,15 @@ namespace EdiusPlayground
 
             switch (choice)
             {
-                case "q":
-                case "quit":
-                case "exit":
-                    return SystemCommand.Quit;
-
                 case "b":
                 case "back":
                     return SystemCommand.Back;
 
+                case "q":
+                case "quit":
+                case "exit":
+                    return SystemCommand.Quit;
+                
                 default:
                     return SystemCommand.None;
             }

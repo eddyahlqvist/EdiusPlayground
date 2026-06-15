@@ -9,17 +9,17 @@ namespace EdiusPlayground
         public SystemCommand Run()
         {
             SystemCommand returnCommand = RunToolsMenu();
-            if (returnCommand == SystemCommand.Quit)
+
+            switch (returnCommand)
             {
-                return SystemCommand.Quit;
+                case SystemCommand.Back:
+                    return SystemCommand.None;
+
+                case SystemCommand.Quit:
+                    return SystemCommand.Quit;
             }
 
-            if (returnCommand == SystemCommand.Back)
-            {
-                return SystemCommand.None;
-            }
-
-            return SystemCommand.Back;
+            return SystemCommand.None;
         }
 
         private SystemCommand RunToolsMenu()
@@ -32,28 +32,29 @@ namespace EdiusPlayground
                 SystemCommand command = MenuHelper.GetSystemCommand(choice);
 
                 switch (command)
-                {
-                    case SystemCommand.Quit:
-                        return SystemCommand.Quit;
-
+                {                    
                     case SystemCommand.Back:
                         return SystemCommand.Back;
+
+                    case SystemCommand.Quit:
+                        return SystemCommand.Quit;
                 }                
 
                 switch (choice)
                 {
                     case "1":
-                        //return _randomNumberTool.Run();
                         SystemCommand returnCommand = _randomNumberTool.Run();
+                        
+                        if (returnCommand == SystemCommand.Back)
+                        {
+                            continue;
+                        }
+
                         if (returnCommand == SystemCommand.Quit)
                         {
                             return SystemCommand.Quit;
                         }
 
-                        if (returnCommand == SystemCommand.Back)
-                        {
-                            continue;
-                        }
                         break;
 
                     default:
@@ -65,7 +66,8 @@ namespace EdiusPlayground
 
         private void ShowToolsMenu()
         {
-            Console.WriteLine("Tools\n");
+            Console.WriteLine();
+            Console.WriteLine("== Tools ==\n");
 
             Console.WriteLine("1. Random Number Generator");
 

@@ -228,14 +228,14 @@ namespace EdiusPlayground
                 }
 
                 SystemCommand command = MenuHelper.GetSystemCommand(input);
-                switch (command)
-                {
-                    case SystemCommand.Quit:
-                        return new GuessResult(null, SystemCommand.Quit);
 
+                switch (command)
+                {                    
                     case SystemCommand.Back:
                         return new GuessResult(null, SystemCommand.Back);
 
+                    case SystemCommand.Quit:
+                        return new GuessResult(null, SystemCommand.Quit);
                 }
 
                 if (!int.TryParse(input, out int playerGuess))
@@ -256,7 +256,8 @@ namespace EdiusPlayground
 
         private void ShowModesMenu()
         {
-            Console.WriteLine("Guess the Number Game Modes: \n");
+            Console.WriteLine();
+            Console.WriteLine("== Guess the Number Game Modes ==\n");
             Console.WriteLine("1. Classic.");
             Console.WriteLine("2. Guess limit set to 10 tries. (HighScore)");
 

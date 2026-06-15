@@ -23,17 +23,16 @@ namespace EdiusPlayground
                 string choice = MenuHelper.GetMenuChoice();
                 SystemCommand command = MenuHelper.GetSystemCommand(choice);
 
-                if (command == SystemCommand.Back)
+                switch (command)
                 {
-                    Console.WriteLine("You can't go back from the main menu. Use 'q' to exit.");
-                    continue;
-                }
+                    case SystemCommand.Back:
+                        Console.WriteLine("You can't go back from the main menu. Use 'q' to exit.");
+                        continue;
 
-                if (command == SystemCommand.Quit)
-                {
-                    Console.WriteLine($"{_user} is signing out. Farewell!");
-                    return SystemCommand.Quit;
-                }
+                    case SystemCommand.Quit:
+                        Console.WriteLine($"{_user} is signing out. Farewell!");
+                        return SystemCommand.Quit;
+                }                
 
                 switch (choice)
                 {
@@ -48,14 +47,14 @@ namespace EdiusPlayground
                     case "3":
                         {
                             SystemCommand returnCommand = _gameHub.Run();
-                            if (returnCommand == SystemCommand.Quit)
-                            {
-                                return SystemCommand.Quit;
-                            }
 
-                            if (returnCommand == SystemCommand.Back)
+                            switch (returnCommand)
                             {
-                                return SystemCommand.None;
+                                case SystemCommand.Back:
+                                    continue;
+
+                                case SystemCommand.Quit:
+                                    return SystemCommand.Quit;
                             }
                             break;
                         }
@@ -63,14 +62,14 @@ namespace EdiusPlayground
                     case "4":
                         {
                             SystemCommand returnCommand = _toolHub.Run();
-                            if (returnCommand == SystemCommand.Quit)
-                            {
-                                return SystemCommand.Quit;
-                            }
 
-                            if (returnCommand == SystemCommand.Back)
+                            switch (returnCommand)
                             {
-                                return SystemCommand.None;
+                                case SystemCommand.Back:
+                                    continue;
+
+                                case SystemCommand.Quit:
+                                    return SystemCommand.Quit;
                             }
                             break;
                         }
@@ -88,7 +87,7 @@ namespace EdiusPlayground
 
         private void ShowMainMenu()
         {
-            Console.WriteLine("Main Menu\n");
+            Console.WriteLine("== Main Menu ==\n");
 
             Console.WriteLine("1. Set active user");       // create, save or load user
             Console.WriteLine("2. Enter playable world");  // game mode

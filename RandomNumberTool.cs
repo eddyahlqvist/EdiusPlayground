@@ -36,14 +36,13 @@ namespace EdiusPlayground
         {
             GeneratorMenuResult result = RunRandomNumberMenu();
 
-            if (result.Command == SystemCommand.Back)
+            switch (result.Command)
             {
-                return SystemCommand.Back;
-            }
+                case SystemCommand.Back:
+                    return SystemCommand.Back;
 
-            if (result.Command == SystemCommand.Quit)
-            {
-                return SystemCommand.Quit;
+                case SystemCommand.Quit:
+                    return SystemCommand.Quit;
             }
 
             if (result.Mode == null)
@@ -169,7 +168,8 @@ namespace EdiusPlayground
 
         private void ShowRandomNumberMenu()
         {
-            Console.WriteLine("Random Number Generators: \n");
+            Console.WriteLine();
+            Console.WriteLine("== Random Number Generators ==\n");
 
             Console.WriteLine("1. Random 1 to 10.");
             Console.WriteLine("2. Random 1 to 100.");
