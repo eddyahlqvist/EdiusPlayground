@@ -59,47 +59,79 @@ namespace EdiusPlayground
 
         public SystemCommand Run()
         {
-            ModeMenuResult result = RunModesMenu();
-
-            switch (result.Command)
+            while (true)
             {
-                case SystemCommand.Back:
-                    return SystemCommand.Back;
+                ModeMenuResult result = RunModesMenu();
 
-                case SystemCommand.Quit:
-                    return SystemCommand.Quit;
-            }
+                switch (result.Command)
+                {
+                    case SystemCommand.Back:
+                        return SystemCommand.Back;
 
-            if (result.Mode == null)
-            {
-                return SystemCommand.None;
-            }
+                    case SystemCommand.Quit:
+                        return SystemCommand.Quit;
+                }
 
-            GameMode chosenMode = result.Mode.Value;
+                if (result.Mode == null)
+                {
+                    return SystemCommand.None;
+                }
 
-            switch (chosenMode)
-            {
-                case GameMode.Classic:
-                    {
-                        PrepareNewRound();
-                        return RunGame(chosenMode);
-                    }
+                GameMode chosenMode = result.Mode.Value;
 
-                case GameMode.LimitedTries:
-                    {
-                        LoadHighScore();
-                        _score = 100;
+                switch (chosenMode)
+                {
+                    case GameMode.Classic:
+                        {
+                            PrepareNewRound();
 
-                        DebugMessage($"Best score is {_bestScore}.");
-                        DebugMessage("Reset HighScore with 'c'.");
+                            SystemCommand classicCommand = RunGame(chosenMode);
 
-                        PrepareNewRound();
-                        return RunGame(chosenMode);
-                    }
-                default:
-                    throw new InvalidOperationException($"Unknown game mode: {chosenMode}");
+                            switch (classicCommand)
+                            {
+                                case SystemCommand.Back:
+                                case SystemCommand.None:
+                                    continue;
+
+                                case SystemCommand.Quit:
+                                    return SystemCommand.Quit;
+                            }
+                        }
+
+                        break;
+
+                    case GameMode.LimitedTries:
+                        {
+                            LoadHighScore();
+                            _score = 100;
+
+                            DebugMessage($"Best score is {_bestScore}.");
+                            DebugMessage("Reset HighScore with 'c'.");
+
+                            PrepareNewRound();
+
+                            SystemCommand limitedCommand = RunGame(chosenMode);
+
+                            switch(limitedCommand)
+                            {
+                                case SystemCommand.Back:
+                                case SystemCommand.None:
+                                    continue;
+
+                                case SystemCommand.Quit:
+                                    return SystemCommand.Quit;
+                            }
+
+                            break;
+                        }
+
+                    default:
+                        throw new InvalidOperationException($"Unknown game mode: {chosenMode}");
+                }
             }
         }
+
+
         private SystemCommand RunGame(GameMode chosenMode)
         {
             List<int> guessedNumbers = [];
@@ -230,7 +262,7 @@ namespace EdiusPlayground
                 SystemCommand command = MenuHelper.GetSystemCommand(input);
 
                 switch (command)
-                {                    
+                {
                     case SystemCommand.Back:
                         return new GuessResult(null, SystemCommand.Back);
 

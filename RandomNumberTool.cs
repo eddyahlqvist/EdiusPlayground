@@ -34,28 +34,29 @@ namespace EdiusPlayground
 
         public SystemCommand Run()
         {
-            GeneratorMenuResult result = RunRandomNumberMenu();
-
-            switch (result.Command)
+            while (true)
             {
-                case SystemCommand.Back:
-                    return SystemCommand.Back;
+                GeneratorMenuResult result = RunRandomNumberMenu();
 
-                case SystemCommand.Quit:
-                    return SystemCommand.Quit;
+                switch (result.Command)
+                {
+                    case SystemCommand.Back:
+                        return SystemCommand.Back;
+
+                    case SystemCommand.Quit:
+                        return SystemCommand.Quit;
+                }
+
+                if (result.Mode == null)
+                {
+                    return SystemCommand.None;
+                }
+
+                GeneratorMode chosenMode = result.Mode.Value;
+
+                RunGenerator(chosenMode);
+                Console.WriteLine($"Your random number is: {_randomNumber}\n");
             }
-
-            if (result.Mode == null)
-            {
-                return SystemCommand.None;
-            }
-
-            GeneratorMode chosenMode = result.Mode.Value;
-
-            RunGenerator(chosenMode);
-            Console.WriteLine($"Your random number is: {_randomNumber}\n");
-
-            return SystemCommand.Back;
         }
 
         private void RunGenerator(GeneratorMode chosenMode)
