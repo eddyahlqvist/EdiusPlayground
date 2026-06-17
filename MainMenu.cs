@@ -7,11 +7,15 @@ namespace EdiusPlayground
         private readonly GameHub _gameHub;
         private readonly ToolHub _toolHub;
 
-        private string _user = "Unknown"; // move ownership to App later
-        public MainMenu(GameHub gameHub, ToolHub toolHub)
+        private readonly Func<string> _getUser;
+        private readonly Action<string> _setUser;
+
+        public MainMenu(GameHub gameHub, ToolHub toolHub, Func<string> getUser, Action<string> setUser)
         {
             _gameHub = gameHub;
             _toolHub = toolHub;
+            _getUser = getUser;
+            _setUser = setUser;
         }
         public SystemCommand Run()
         {
@@ -30,14 +34,14 @@ namespace EdiusPlayground
                         continue;
 
                     case SystemCommand.Quit:
-                        Console.WriteLine($"{_user} is signing out. Farewell!");
+                        Console.WriteLine($"{_getUser()} is signing out. Farewell!");
                         return SystemCommand.Quit;
                 }                
 
                 switch (choice)
                 {
                     case "1":
-                        _user = SetUser();
+                        _setUser(PromptForUserName());
                         break;
 
                     case "2":
@@ -100,10 +104,10 @@ namespace EdiusPlayground
 
         private void DisplayUser()
         {
-            Console.WriteLine($"Current active user: {_user}\n");
+            Console.WriteLine($"Current active user: {_getUser()}\n");
         }
 
-        private string SetUser()
+        private string PromptForUserName()
         {
             Console.WriteLine("Please enter your name: ");
 
