@@ -8,10 +8,11 @@ namespace EdiusPlayground
         private readonly MainMenu _mainMenu;
         private readonly GameHub _gameHub = new();
         private readonly ToolHub _toolHub = new();
+        private readonly AdventureGame _adventureGame = new();
 
         public App()
         {
-            _mainMenu = new MainMenu(_gameHub, _toolHub, GetUser, SetUser);
+            _mainMenu = new MainMenu(_gameHub, _toolHub, _adventureGame, GetUser, SetUser);
         }
 
         public void Run()

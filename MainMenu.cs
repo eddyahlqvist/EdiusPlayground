@@ -6,14 +6,17 @@ namespace EdiusPlayground
     {
         private readonly GameHub _gameHub;
         private readonly ToolHub _toolHub;
+        private readonly AdventureGame _adventureGame;
 
         private readonly Func<string> _getUser;
         private readonly Action<string> _setUser;
 
-        public MainMenu(GameHub gameHub, ToolHub toolHub, Func<string> getUser, Action<string> setUser)
+        public MainMenu(GameHub gameHub, ToolHub toolHub, AdventureGame adventureGame, Func<string> getUser, Action<string> setUser)
         {
             _gameHub = gameHub;
             _toolHub = toolHub;
+            _adventureGame = adventureGame;
+
             _getUser = getUser;
             _setUser = setUser;
         }
@@ -47,8 +50,7 @@ namespace EdiusPlayground
                         break;
 
                     case "2":
-                        Console.WriteLine();
-                        Console.WriteLine("Playable world is not implemented yet.");
+                        _adventureGame.Run();
                         break;
 
                     case "3":
