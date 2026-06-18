@@ -30,11 +30,13 @@ namespace EdiusPlayground
                 switch (command)
                 {
                     case SystemCommand.Back:
+                        Console.WriteLine();
                         Console.WriteLine("You can't go back from the main menu. Use 'q' to exit.");
                         continue;
 
                     case SystemCommand.Quit:
-                        Console.WriteLine($"{_getUser()} is signing out. Farewell!");
+                        Console.WriteLine();
+                        ConsoleHelper.WriteLineColored($"{_getUser()} is signing out. Farewell!", ConsoleColor.Cyan);
                         return SystemCommand.Quit;
                 }                
 
@@ -45,6 +47,7 @@ namespace EdiusPlayground
                         break;
 
                     case "2":
+                        Console.WriteLine();
                         Console.WriteLine("Playable world is not implemented yet.");
                         break;
 
@@ -79,10 +82,12 @@ namespace EdiusPlayground
                         }
 
                     case "5":
+                        Console.WriteLine();
                         Console.WriteLine("Settings are not implemented yet.");
                         break;
                    
                     default:
+                        Console.WriteLine();
                         Console.WriteLine("Please pick an option from the menu.");
                         break;
                 }                
@@ -104,11 +109,15 @@ namespace EdiusPlayground
 
         private void DisplayUser()
         {
-            Console.WriteLine($"Current active user: {_getUser()}\n");
+            Console.WriteLine();
+            Console.Write("Current active user: ");
+            ConsoleHelper.WriteLineColored(_getUser(), ConsoleColor.Cyan);
+            Console.WriteLine();
         }
 
         private string PromptForUserName()
         {
+            Console.WriteLine();
             Console.WriteLine("Please enter your name: ");
 
             string? input = Console.ReadLine();

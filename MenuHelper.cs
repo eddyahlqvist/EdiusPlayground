@@ -2,7 +2,7 @@
 
 namespace EdiusPlayground
 {
-    internal class MenuHelper
+    internal static class MenuHelper
     {
         public static string GetMenuChoice()
         {

@@ -170,8 +170,8 @@ namespace EdiusPlayground
 
                     if (_amountGuessed == MaxTries && guess != _secretNumber)
                     {
-                        Console.WriteLine("Game Over, you have used all your available tries");
-                        Console.WriteLine($"Your guesses: {string.Join(", ", guessedNumbers)}");
+                        ConsoleHelper.WriteLineColored("Game Over, you have used all your available tries", ConsoleColor.Cyan);
+                        ConsoleHelper.WriteLineColored($"Your guesses: {string.Join(", ", guessedNumbers)}", ConsoleColor.Cyan);
                         return SystemCommand.None;
                     }
                 }
@@ -186,7 +186,7 @@ namespace EdiusPlayground
                 }
                 else
                 {
-                    Console.WriteLine($"Correct! The secret number was {_secretNumber}. Congratulations!");
+                    ConsoleHelper.WriteLineColored($"Correct! The secret number was {_secretNumber}. Congratulations!", ConsoleColor.Cyan);
 
                     if (chosenMode == GameMode.LimitedTries)
                     {
@@ -195,25 +195,25 @@ namespace EdiusPlayground
                             _bestScore = _score;
                             SaveHighScore();
 
-                            Console.WriteLine($"New high score: {_bestScore} points!");
+                            ConsoleHelper.WriteLineColored($"New high score: {_bestScore} points!", ConsoleColor.Cyan);
                         }
 
                         else
                         {
-                            Console.WriteLine($"Best score: {_bestScore}");
+                            ConsoleHelper.WriteLineColored($"Best score: {_bestScore}", ConsoleColor.Cyan);
                         }
                     }
 
                     if (_amountGuessed == 1)
                     {
-                        Console.WriteLine("You beat the game on your first try! Unbelievable.");
+                        ConsoleHelper.WriteLineColored("You beat the game on your first try! Unbelievable.", ConsoleColor.Cyan);
                         return SystemCommand.None;
                     }
 
                     else
                     {
-                        Console.WriteLine($"You beat the game in {_amountGuessed} tries.");
-                        Console.WriteLine($"Your guesses: {string.Join(", ", guessedNumbers)}");
+                        ConsoleHelper.WriteLineColored($"You beat the game in {_amountGuessed} tries.", ConsoleColor.Cyan);
+                        ConsoleHelper.WriteLineColored($"Your guesses: {string.Join(", ", guessedNumbers)}", ConsoleColor.Cyan);
                         return SystemCommand.None;
                     }
                 }
@@ -229,9 +229,10 @@ namespace EdiusPlayground
         {
             if (IsDebugMode)
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                ConsoleColor oldColor = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"DEBUG Info: {message}");
-                Console.ResetColor();
+                Console.ForegroundColor = oldColor;
             }
         }
 

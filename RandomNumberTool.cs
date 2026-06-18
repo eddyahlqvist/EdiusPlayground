@@ -55,7 +55,8 @@ namespace EdiusPlayground
                 GeneratorMode chosenMode = result.Mode.Value;
 
                 RunGenerator(chosenMode);
-                Console.WriteLine($"Your random number is: {_randomNumber}\n");
+                Console.WriteLine();
+                ConsoleHelper.WriteLineColored($"Your random number is: {_randomNumber}",ConsoleColor.Cyan);
             }
         }
 
@@ -76,16 +77,19 @@ namespace EdiusPlayground
                     return;
 
                 case GeneratorMode.Custom:
+                    Console.WriteLine();
                     Console.WriteLine("Enter the lower number: ");
                     _lowNumber = GetUserNumber();
 
                     while (true)
                     {
+                        Console.WriteLine();
                         Console.WriteLine("Enter the higher number: ");
                         _highNumber = GetUserNumber();
 
                         if (_highNumber <= _lowNumber)
                         {
+                            Console.WriteLine();
                             Console.WriteLine($"Please enter a number that's higher than {_lowNumber}.");
                             continue;
                         }
@@ -106,6 +110,7 @@ namespace EdiusPlayground
 
                 if (!int.TryParse(input, out int number))
                 {
+                    Console.WriteLine();
                     Console.WriteLine("Please enter a number.");
                     continue;
                 }
@@ -123,6 +128,7 @@ namespace EdiusPlayground
         {
             if (userNumber < LowestAllowedNumber || userNumber > HighestAllowedNumber)
             {
+                Console.WriteLine();
                 Console.WriteLine($"Pick a number between {LowestAllowedNumber} and {HighestAllowedNumber}.");
                 return false;
             }
@@ -161,6 +167,7 @@ namespace EdiusPlayground
                         return new GeneratorMenuResult(GeneratorMode.Custom, SystemCommand.None);
 
                     default:
+                        Console.WriteLine();
                         Console.WriteLine("Please pick an option from the menu.");
                         continue;
                 }
