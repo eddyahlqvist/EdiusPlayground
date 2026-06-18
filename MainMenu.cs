@@ -50,8 +50,19 @@ namespace EdiusPlayground
                         break;
 
                     case "2":
-                        _adventureGame.Run();
-                        break;
+                        {
+                            SystemCommand returnCommand = _adventureGame.Run();
+
+                            switch (returnCommand)
+                            {
+                                case SystemCommand.Back:
+                                    continue;
+
+                                case SystemCommand.Quit:
+                                    return SystemCommand.Quit;
+                            }
+                            break;
+                        }
 
                     case "3":
                         {
