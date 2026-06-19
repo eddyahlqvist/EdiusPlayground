@@ -4,6 +4,11 @@ namespace EdiusPlayground
 {
     internal class AdventureGame
     {
+        private Player? _currentPlayer;
+        private Room _currentRoom = new Room(
+            "The Threshold",
+            "You stand in a quiet stone chamber. The air is still.");
+
         public SystemCommand Run()
         {
             SystemCommand returnCommand = RunAdventureMenu();
@@ -22,8 +27,47 @@ namespace EdiusPlayground
 
         private void CreateNewCharacter()
         {
+            while (true)
+            {
+                Console.WriteLine();
+                Console.WriteLine("== Character Creation ==\n");
+                Console.WriteLine("Enter character name:");
+
+                string name = Console.ReadLine()?.Trim() ?? "";
+
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    Console.WriteLine("Please enter a character name.");
+                    continue;
+                }
+
+                _currentPlayer = new Player(name);
+
+                ConsoleHelper.WriteLineColored(
+                    $"Character created: {_currentPlayer.Name}",
+                    ConsoleColor.Cyan);
+
+                break;
+            }
+        }
+
+        private void DisplayCurrentCharacter()
+        {
+            string name = _currentPlayer?.Name ?? "None";
+            Console.WriteLine($"Current character: {name}");
+        }
+
+        private void EnterWorld()
+        {
+            if (_currentPlayer == null)
+            {
+                Console.WriteLine("No character loaded. Create or load a character first.");
+                return;
+            }
+
             Console.WriteLine();
-            Console.WriteLine("'New' not yet implemented");
+            Console.WriteLine(_currentRoom.Name);
+            Console.WriteLine(_currentRoom.Description);
         }
 
         private SystemCommand RunAdventureMenu()
@@ -56,8 +100,8 @@ namespace EdiusPlayground
                         break;
 
                     case "3":
-                        Console.WriteLine();
-                        Console.WriteLine("'Continue' not yet implemented");
+                        EnterWorld();
+                        DisplayCurrentCharacter();
                         break;
 
                     default:
@@ -74,7 +118,7 @@ namespace EdiusPlayground
 
             Console.WriteLine("1. New character: ");
             Console.WriteLine("2. Load character: ");
-            Console.WriteLine("3. Continue: ");
+            Console.WriteLine("3. Enter World: ");
 
             Console.WriteLine();
             Console.WriteLine("B. Back");

@@ -112,7 +112,7 @@ namespace EdiusPlayground
             Console.WriteLine("== Main Menu ==\n");
 
             Console.WriteLine("1. Set active user");       // create, save or load user
-            Console.WriteLine("2. Enter playable world");  // game mode
+            Console.WriteLine("2. Enter adventure mode");  // game mode
             Console.WriteLine("3. Games");
             Console.WriteLine("4. Tools");
             Console.WriteLine("5. Settings");   // customization for colors, fonts etc
