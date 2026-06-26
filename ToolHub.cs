@@ -6,9 +6,10 @@ namespace EdiusPlayground
     internal class ToolHub
     {
         private readonly RandomNumberTool _randomNumberTool = new();
+        private readonly CharacterExplorer _characterExplorer = new();
         public SystemCommand Run()
         {
-            SystemCommand returnCommand = RunToolsMenu();
+            SystemCommand returnCommand = RunMenu();
 
             switch (returnCommand)
             {
@@ -22,11 +23,11 @@ namespace EdiusPlayground
             return SystemCommand.None;
         }
 
-        private SystemCommand RunToolsMenu()
+        private SystemCommand RunMenu()
         {
             while (true)
             {
-                ShowToolsMenu();
+                ShowMenu();
 
                 string choice = MenuHelper.GetMenuChoice();
                 SystemCommand command = MenuHelper.GetSystemCommand(choice);
@@ -43,19 +44,38 @@ namespace EdiusPlayground
                 switch (choice)
                 {
                     case "1":
-                        SystemCommand returnCommand = _randomNumberTool.Run();
-                        
-                        if (returnCommand == SystemCommand.Back)
                         {
-                            continue;
+                            SystemCommand returnCommand = _randomNumberTool.Run();
+
+                            if (returnCommand == SystemCommand.Back)
+                            {
+                                continue;
+                            }
+
+                            if (returnCommand == SystemCommand.Quit)
+                            {
+                                return SystemCommand.Quit;
+                            }
+
+                            break;
                         }
 
-                        if (returnCommand == SystemCommand.Quit)
+                    case "2":
                         {
-                            return SystemCommand.Quit;
-                        }
+                            SystemCommand returnCommand = _characterExplorer.Run();
 
-                        break;
+                            if (returnCommand == SystemCommand.Back)
+                            {
+                                continue;
+                            }
+
+                            if (returnCommand == SystemCommand.Quit)
+                            {
+                                return SystemCommand.Quit;
+                            }
+
+                            break;
+                        }
 
                     default:
                         Console.WriteLine("Please pick an option from the menu.");
@@ -64,12 +84,13 @@ namespace EdiusPlayground
             }
         }
 
-        private void ShowToolsMenu()
+        private void ShowMenu()
         {
             Console.WriteLine();
             Console.WriteLine("== Tools ==\n");
 
             Console.WriteLine("1. Random Number Generator");
+            Console.WriteLine("2. Character Explorer");
 
             Console.WriteLine("B. Back");
             Console.WriteLine("Q. Quit\n");

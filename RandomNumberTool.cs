@@ -36,7 +36,7 @@ namespace EdiusPlayground
         {
             while (true)
             {
-                GeneratorMenuResult result = RunRandomNumberMenu();
+                GeneratorMenuResult result = RunMenu();
 
                 switch (result.Command)
                 {
@@ -141,11 +141,11 @@ namespace EdiusPlayground
             return _rnd.Next(_lowNumber, _highNumber + 1);
         }
 
-        private GeneratorMenuResult RunRandomNumberMenu()
+        private GeneratorMenuResult RunMenu()
         {
             while (true)
             {
-                ShowRandomNumberMenu();
+                ShowMenu();
 
                 string choice = MenuHelper.GetMenuChoice();
                 SystemCommand command = MenuHelper.GetSystemCommand(choice);
@@ -174,7 +174,7 @@ namespace EdiusPlayground
             }
         }
 
-        private void ShowRandomNumberMenu()
+        private void ShowMenu()
         {
             Console.WriteLine();
             Console.WriteLine("== Random Number Generators ==\n");

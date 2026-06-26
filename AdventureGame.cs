@@ -61,19 +61,34 @@ namespace EdiusPlayground
         {
             if (_currentPlayer == null)
             {
-                Console.WriteLine("No character loaded. Create or load a character first.");
+                Console.WriteLine("No character loaded.");
                 return;
             }
 
-            Console.WriteLine();
-            Console.WriteLine(_currentRoom.Name);
-            Console.WriteLine(_currentRoom.Description);
+            while (true)
+            {
+                Console.WriteLine();
+                Console.WriteLine(_currentRoom.Name);
+                Console.WriteLine(_currentRoom.Description);
+
+                Console.Write("> ");
+
+                string command = Console.ReadLine()?.Trim().ToLower() ?? "";
+
+                if (command == "exit")
+                {
+                    break;
+                }
+
+                Console.WriteLine("Unknown command.");
+            }
         }
 
         private SystemCommand RunAdventureMenu()
         {
             while (true)
             {
+                DisplayCurrentCharacter();
                 ShowAdventureMenu();
 
                 string choice = MenuHelper.GetMenuChoice();
@@ -101,7 +116,6 @@ namespace EdiusPlayground
 
                     case "3":
                         EnterWorld();
-                        DisplayCurrentCharacter();
                         break;
 
                     default:

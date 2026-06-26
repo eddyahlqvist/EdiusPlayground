@@ -9,7 +9,7 @@ namespace EdiusPlayground
 
         public SystemCommand Run()
         {
-            SystemCommand returnCommand = RunGamesMenu();
+            SystemCommand returnCommand = RunMenu();
 
             switch (returnCommand)
             {
@@ -23,11 +23,11 @@ namespace EdiusPlayground
             return SystemCommand.None;
         }
 
-        private SystemCommand RunGamesMenu()
+        private SystemCommand RunMenu()
         {
             while (true)
             {
-                ShowGamesMenu();
+                ShowMenu();
 
                 string choice = MenuHelper.GetMenuChoice();
                 SystemCommand command = MenuHelper.GetSystemCommand(choice);
@@ -64,7 +64,7 @@ namespace EdiusPlayground
             }
         }
 
-        private void ShowGamesMenu()
+        private void ShowMenu()
         {
             Console.WriteLine();
             Console.WriteLine("== Games ==\n");
