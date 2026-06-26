@@ -7,6 +7,7 @@ namespace EdiusPlayground
     {
         private readonly RandomNumberTool _randomNumberTool = new();
         private readonly CharacterExplorer _characterExplorer = new();
+        private readonly Archive _archive = new();
         public SystemCommand Run()
         {
             SystemCommand returnCommand = RunMenu();
@@ -77,6 +78,23 @@ namespace EdiusPlayground
                             break;
                         }
 
+                    case "3":
+                        {
+                            SystemCommand returnCommand = _archive.Run();
+
+                            if (returnCommand == SystemCommand.Back)
+                            {
+                                continue;
+                            }
+
+                            if (returnCommand == SystemCommand.Quit)
+                            {
+                                return SystemCommand.Quit;
+                            }
+
+                            break;
+                        }
+
                     default:
                         Console.WriteLine("Please pick an option from the menu.");
                         break;
@@ -91,6 +109,7 @@ namespace EdiusPlayground
 
             Console.WriteLine("1. Random Number Generator");
             Console.WriteLine("2. Character Explorer");
+            Console.WriteLine("3. Archive");
 
             Console.WriteLine("B. Back");
             Console.WriteLine("Q. Quit\n");
