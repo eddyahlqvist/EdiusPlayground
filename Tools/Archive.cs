@@ -8,7 +8,8 @@ namespace EdiusPlayground
     {
         private const string ArchiveFile = "archive.txt";
         private List<string> _notes = new();
-        //private string _note = "";
+
+        private const bool IsDebugMode = true;
         
         private enum ArchiveMode
         {
@@ -33,6 +34,8 @@ namespace EdiusPlayground
 
         public SystemCommand Run()
         {
+            LoadNotes();
+
             while (true)
             {
                 MenuResult result = RunMenu();
@@ -86,9 +89,7 @@ namespace EdiusPlayground
         }
 
         private void ReadNote()
-        {
-            LoadNotes();
-
+        {            
             if (_notes.Count == 0)
             {
                 Console.WriteLine("The Archive is empty.");
@@ -172,11 +173,25 @@ namespace EdiusPlayground
                     _notes.Add(line);
                 }
             }
+
+            DebugMessage($"Loaded {_notes.Count} notes from {ArchiveFile}.");
         }
 
         private void SaveNotes()
         {
             File.WriteAllLines(ArchiveFile, _notes);
+            DebugMessage($"Saved {_notes.Count} notes to {ArchiveFile}.");
+        }
+
+        private void DebugMessage(string message)
+        {
+            if (IsDebugMode)
+            {
+                ConsoleColor oldColor = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"DEBUG Info: {message}");
+                Console.ForegroundColor = oldColor;
+            }
         }
     }
 }
