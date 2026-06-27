@@ -1,9 +1,13 @@
 ﻿using System;
+using System.IO;
 
 namespace EdiusPlayground
 {
     internal class Archive
     {
+        private const string ArchiveFile = "archive.txt";
+        private string _note = "";
+        
         private enum ArchiveMode
         {
             ReadNote,
@@ -48,11 +52,11 @@ namespace EdiusPlayground
                 switch (result.Mode)
                 {
                     case ArchiveMode.ReadNote:
-                        Console.WriteLine("ReadNote, not yet implemented");
+                        ReadNote();
                         break;
 
                     case ArchiveMode.AddNote:
-                        Console.WriteLine("AddNote, not yet implemented");
+                        AddNote();
                         break;
                     case ArchiveMode.EditNote:
                         Console.WriteLine("EditNote, not yet implemented");
@@ -65,6 +69,24 @@ namespace EdiusPlayground
                         break;
                 }
             }
+        }
+
+        private void AddNote()
+        {
+            Console.WriteLine("Write your note: ");
+            string? input = Console.ReadLine();
+
+            if (input != null)
+            {
+                _note = input;
+                SaveNotes();
+            }
+        }
+
+        private void ReadNote()
+        {
+            LoadNotes();
+            Console.WriteLine(_note);
         }
 
         private MenuResult RunMenu()
@@ -118,6 +140,22 @@ namespace EdiusPlayground
 
             Console.WriteLine("B. Back.");
             Console.WriteLine("Q. Quit.\n");
+        }
+
+        private void LoadNotes()
+        {
+            if (!File.Exists(ArchiveFile))
+            {
+                _note = "";
+                return;
+            }
+
+            _note = File.ReadAllText(ArchiveFile);
+        }
+
+        private void SaveNotes()
+        {
+            File.WriteAllText(ArchiveFile, _note);
         }
     }
 }
