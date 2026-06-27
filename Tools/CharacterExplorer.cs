@@ -1,6 +1,8 @@
-﻿using System;
+﻿using EdiusPlayground.Core;
+using EdiusPlayground.Menus;
+using System;
 
-namespace EdiusPlayground
+namespace EdiusPlayground.Tools
 {
     internal class CharacterExplorer
     {

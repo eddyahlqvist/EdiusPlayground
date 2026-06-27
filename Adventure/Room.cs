@@ -1,6 +1,5 @@
-﻿using System;
-
-namespace EdiusPlayground
+﻿
+namespace EdiusPlayground.Adventure
 {
     internal class Room
     {
@@ -11,7 +10,7 @@ namespace EdiusPlayground
         public Room(string name, string description)
         {
             Name = name;
-            Description = description;            
+            Description = description;
         }
 
 

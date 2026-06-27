@@ -1,7 +1,6 @@
-﻿
-namespace EdiusPlayground
+﻿namespace EdiusPlayground.Core
 
-    // Project by Edius Ahlqvistus started 2026-06-08 for learning purpose.
+// Project by Edius Ahlqvistus started 2026-06-08 for learning purpose.
 {
     internal class Program
     {

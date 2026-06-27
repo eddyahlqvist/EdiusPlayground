@@ -1,7 +1,6 @@
-﻿
-using System;
+﻿using System;
 
-namespace EdiusPlayground
+namespace EdiusPlayground.Helpers
 {
     internal static class ConsoleHelper
     {

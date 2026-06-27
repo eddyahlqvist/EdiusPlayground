@@ -1,6 +1,7 @@
-﻿using System;
+﻿using EdiusPlayground.Core;
+using System;
 
-namespace EdiusPlayground
+namespace EdiusPlayground.Menus
 {
     internal static class MenuHelper
     {

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using EdiusPlayground.Core;
+using EdiusPlayground.Menus;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace EdiusPlayground
+namespace EdiusPlayground.Tools
 {
     internal class Archive
     {
@@ -88,8 +90,13 @@ namespace EdiusPlayground
             }
         }
 
-        private void ReadNote()
-        {            
+        //private void SelectNote()
+        //{
+
+        //}
+
+        private void ListNotes()
+        {
             if (_notes.Count == 0)
             {
                 Console.WriteLine("The Archive is empty.");
@@ -100,6 +107,11 @@ namespace EdiusPlayground
             {
                 Console.WriteLine($"{i + 1}. {_notes[i]}");
             }
+        }
+
+        private void ReadNote()
+        {            
+            ListNotes();
         }
 
         private MenuResult RunMenu()

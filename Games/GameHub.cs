@@ -1,7 +1,8 @@
-﻿
+﻿using EdiusPlayground.Core;
+using EdiusPlayground.Menus;
 using System;
 
-namespace EdiusPlayground
+namespace EdiusPlayground.Games
 {
     internal class GameHub
     {

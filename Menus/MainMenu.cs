@@ -1,6 +1,11 @@
-﻿using System;
+﻿using EdiusPlayground.Adventure;
+using EdiusPlayground.Core;
+using EdiusPlayground.Games;
+using EdiusPlayground.Helpers;
+using EdiusPlayground.Tools;
+using System;
 
-namespace EdiusPlayground
+namespace EdiusPlayground.Menus
 {
     internal class MainMenu
     {

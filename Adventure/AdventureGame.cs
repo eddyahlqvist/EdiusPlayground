@@ -1,6 +1,9 @@
-﻿using System;
+﻿using EdiusPlayground.Core;
+using EdiusPlayground.Helpers;
+using EdiusPlayground.Menus;
+using System;
 
-namespace EdiusPlayground
+namespace EdiusPlayground.Adventure
 {
     internal class AdventureGame
     {

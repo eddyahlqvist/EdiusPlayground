@@ -1,5 +1,9 @@
-﻿
-namespace EdiusPlayground
+﻿using EdiusPlayground.Adventure;
+using EdiusPlayground.Games;
+using EdiusPlayground.Menus;
+using EdiusPlayground.Tools;
+
+namespace EdiusPlayground.Core
 {
     internal class App
     {

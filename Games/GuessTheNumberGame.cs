@@ -2,8 +2,11 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using EdiusPlayground.Helpers;
+using EdiusPlayground.Menus;
+using EdiusPlayground.Core;
 
-namespace EdiusPlayground
+namespace EdiusPlayground.Games
 {
     internal class GuessTheNumberGame
     {

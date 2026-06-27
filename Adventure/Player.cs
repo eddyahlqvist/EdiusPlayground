@@ -1,4 +1,4 @@
-﻿namespace EdiusPlayground
+﻿namespace EdiusPlayground.Adventure
 {
     internal class Player
     {

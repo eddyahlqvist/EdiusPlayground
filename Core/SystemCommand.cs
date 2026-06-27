@@ -1,5 +1,4 @@
-﻿
-namespace EdiusPlayground
+﻿namespace EdiusPlayground.Core
 {
     internal enum SystemCommand
     {
