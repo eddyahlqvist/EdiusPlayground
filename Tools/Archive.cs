@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace EdiusPlayground
@@ -6,7 +7,8 @@ namespace EdiusPlayground
     internal class Archive
     {
         private const string ArchiveFile = "archive.txt";
-        private string _note = "";
+        private List<string> _notes = new();
+        //private string _note = "";
         
         private enum ArchiveMode
         {
@@ -78,7 +80,7 @@ namespace EdiusPlayground
 
             if (input != null)
             {
-                _note = input;
+                _notes.Add(input);
                 SaveNotes();
             }
         }
@@ -86,7 +88,17 @@ namespace EdiusPlayground
         private void ReadNote()
         {
             LoadNotes();
-            Console.WriteLine(_note);
+
+            if (_notes.Count == 0)
+            {
+                Console.WriteLine("The Archive is empty.");
+                return;
+            }
+
+            for (int i = 0; i < _notes.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {_notes[i]}");
+            }
         }
 
         private MenuResult RunMenu()
@@ -144,18 +156,27 @@ namespace EdiusPlayground
 
         private void LoadNotes()
         {
+            _notes.Clear();
+
             if (!File.Exists(ArchiveFile))
             {
-                _note = "";
                 return;
             }
 
-            _note = File.ReadAllText(ArchiveFile);
+            string[] lines = File.ReadAllLines(ArchiveFile);
+
+            foreach (string line in lines)
+            {
+                if (!string.IsNullOrWhiteSpace(line))
+                {
+                    _notes.Add(line);
+                }
+            }
         }
 
         private void SaveNotes()
         {
-            File.WriteAllText(ArchiveFile, _note);
+            File.WriteAllLines(ArchiveFile, _notes);
         }
     }
 }
