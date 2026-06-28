@@ -10,12 +10,13 @@ namespace EdiusPlayground.Games
 {
     internal class GuessTheNumberGame
     {
-        private static readonly Random _rnd = new Random();
+        private static readonly Random _rnd = new();
 
         private enum GameMode
         {
             Classic,
-            LimitedTries
+            LimitedTries,
+            Hardcore
         }
 
         private readonly struct ModeMenuResult
@@ -43,8 +44,8 @@ namespace EdiusPlayground.Games
         }
 
         // Game settings
-        private readonly int _lowNumber = 1;
-        private readonly int _highNumber = 100;
+        private const byte _lowNumber = 1;
+        private int _highNumber;
         private const byte GuessCost = 10;
         private const byte MaxTries = 10;
 
@@ -86,6 +87,7 @@ namespace EdiusPlayground.Games
                 {
                     case GameMode.Classic:
                         {
+                            _highNumber = 100;
                             PrepareNewRound();
 
                             SystemCommand classicCommand = RunGame(chosenMode);
@@ -105,6 +107,7 @@ namespace EdiusPlayground.Games
 
                     case GameMode.LimitedTries:
                         {
+                            _highNumber = 100;
                             LoadHighScore();
                             _score = 100;
 
@@ -127,6 +130,26 @@ namespace EdiusPlayground.Games
 
                             break;
                         }
+
+                    case GameMode.Hardcore:
+                        {
+                            _highNumber = 1000;
+                            PrepareNewRound();                            
+
+                            SystemCommand hardcoreCommand = RunGame(chosenMode);
+
+                            switch (hardcoreCommand)
+                            {
+                                case SystemCommand.Back:
+                                case SystemCommand.None:
+                                    continue;
+
+                                case SystemCommand.Quit:
+                                    return SystemCommand.Quit;
+                            }
+                        }
+
+                        break;
 
                     default:
                         throw new InvalidOperationException($"Unknown game mode: {chosenMode}");
@@ -164,7 +187,7 @@ namespace EdiusPlayground.Games
                 guessedNumbers.Add(guess);
                 _amountGuessed = guessedNumbers.Count;
 
-                if (chosenMode == GameMode.LimitedTries)
+                if (chosenMode == GameMode.LimitedTries || chosenMode == GameMode.Hardcore)
                 {
                     if (_amountGuessed > 1)
                     {
@@ -296,6 +319,7 @@ namespace EdiusPlayground.Games
             Console.WriteLine("== Guess the Number Game Modes ==\n");
             Console.WriteLine("1. Classic.");
             Console.WriteLine("2. Guess limit set to 10 tries. (HighScore)");
+            Console.WriteLine("3. Hardcore with 10 tries");
 
             Console.WriteLine("B. Back.");
             Console.WriteLine("Q. Quit.\n");
@@ -322,6 +346,9 @@ namespace EdiusPlayground.Games
 
                     case "2":
                         return new ModeMenuResult(GameMode.LimitedTries, SystemCommand.None);
+
+                    case "3":
+                        return new ModeMenuResult(GameMode.Hardcore, SystemCommand.None);
 
                     default:
                         Console.WriteLine("Please pick an option from the menu.");

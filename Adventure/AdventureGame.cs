@@ -8,12 +8,12 @@ namespace EdiusPlayground.Adventure
     internal class AdventureGame
     {
         private Player? _currentPlayer;
-        private Room _currentRoom = new Room(
-            "The Threshold",
-            "You stand in a quiet stone chamber. The air is still.");
+        private Room? _startingRoom;
 
         public SystemCommand Run()
         {
+            BuildWorld();
+
             SystemCommand returnCommand = RunAdventureMenu();
 
             switch (returnCommand)
@@ -68,11 +68,24 @@ namespace EdiusPlayground.Adventure
                 return;
             }
 
+            if (_currentPlayer.CurrentRoom == null)
+            {
+                _currentPlayer.CurrentRoom = _startingRoom;
+            }
+
             while (true)
             {
+                Room? currentRoom = _currentPlayer.CurrentRoom;
+
+                if (currentRoom == null)
+                {
+                    Console.WriteLine("Something went wrong. You are nowhere.");
+                    return;
+                }
+
                 Console.WriteLine();
-                Console.WriteLine(_currentRoom.Name);
-                Console.WriteLine(_currentRoom.Description);
+                Console.WriteLine(currentRoom.Name);
+                Console.WriteLine(currentRoom.Description);             
 
                 Console.Write("> ");
 
@@ -81,6 +94,18 @@ namespace EdiusPlayground.Adventure
                 if (command == "exit")
                 {
                     break;
+                }
+
+                if (command == "north" && _currentPlayer.CurrentRoom?.North != null)
+                {
+                    _currentPlayer.CurrentRoom = _currentPlayer.CurrentRoom.North;
+                    continue;
+                }
+
+                if (command == "south" && _currentPlayer.CurrentRoom?.South != null)
+                {
+                    _currentPlayer.CurrentRoom = _currentPlayer.CurrentRoom.South;
+                    continue;
                 }
 
                 Console.WriteLine("Unknown command.");
@@ -131,7 +156,7 @@ namespace EdiusPlayground.Adventure
         private void ShowAdventureMenu()
         {
             Console.WriteLine();
-            Console.WriteLine("== Adventure ==\n"); // come up with something better here
+            Console.WriteLine("== Adventure MUD sim ==\n"); // come up with something better here
 
             Console.WriteLine("1. New character: ");
             Console.WriteLine("2. Load character: ");
@@ -140,6 +165,12 @@ namespace EdiusPlayground.Adventure
             Console.WriteLine();
             Console.WriteLine("B. Back");
             Console.WriteLine("Q. Quit\n");
+        }
+
+        private void BuildWorld()
+        {
+            WorldBuilder builder = new();
+            _startingRoom = builder.BuildWorld();
         }
     }
 }
