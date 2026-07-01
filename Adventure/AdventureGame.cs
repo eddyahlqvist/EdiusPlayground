@@ -7,6 +7,8 @@ namespace EdiusPlayground.Adventure
 {
     internal class AdventureGame
     {
+        private const bool IsDebugMode = true;
+
         private Player? _currentPlayer;
         private Room? _startingRoom;
 
@@ -60,6 +62,54 @@ namespace EdiusPlayground.Adventure
             Console.WriteLine($"Current character: {name}");
         }
 
+        private void RunGameLoop()
+        {
+            while (true)
+            {
+                Room? currentRoom = _currentPlayer?.CurrentRoom;
+
+                if (currentRoom == null)
+                {                    
+                    DebugMessage("ERROR: Player CurrentRoom was null while inside the world. Resetting to starting room.");
+
+                    ConsoleHelper.WriteLineColored(
+                        "Something went wrong. Reality flickers, and you are returned to The Threshold.",
+                        ConsoleColor.Red);
+
+                    _currentPlayer!.CurrentRoom = _startingRoom;
+
+                    currentRoom = _currentPlayer.CurrentRoom;
+                }
+
+                Console.WriteLine();
+                Console.WriteLine(currentRoom?.Name);
+                Console.WriteLine(currentRoom?.Description);
+
+                Console.Write("> ");
+
+                string command = Console.ReadLine()?.Trim().ToLower() ?? "";
+
+                if (command == "exit")
+                {
+                    break;
+                }
+
+                if (command == "north" && _currentPlayer?.CurrentRoom?.North != null)
+                {
+                    _currentPlayer.CurrentRoom = _currentPlayer.CurrentRoom.North;
+                    continue;
+                }
+
+                if (command == "south" && _currentPlayer?.CurrentRoom?.South != null)
+                {
+                    _currentPlayer.CurrentRoom = _currentPlayer.CurrentRoom.South;
+                    continue;
+                }
+
+                Console.WriteLine("Unknown command.");
+            }
+        }
+
         private void EnterWorld()
         {
             if (_currentPlayer == null)
@@ -73,43 +123,7 @@ namespace EdiusPlayground.Adventure
                 _currentPlayer.CurrentRoom = _startingRoom;
             }
 
-            while (true)
-            {
-                Room? currentRoom = _currentPlayer.CurrentRoom;
-
-                if (currentRoom == null)
-                {
-                    Console.WriteLine("Something went wrong. You are nowhere.");
-                    return;
-                }
-
-                Console.WriteLine();
-                Console.WriteLine(currentRoom.Name);
-                Console.WriteLine(currentRoom.Description);             
-
-                Console.Write("> ");
-
-                string command = Console.ReadLine()?.Trim().ToLower() ?? "";
-
-                if (command == "exit")
-                {
-                    break;
-                }
-
-                if (command == "north" && _currentPlayer.CurrentRoom?.North != null)
-                {
-                    _currentPlayer.CurrentRoom = _currentPlayer.CurrentRoom.North;
-                    continue;
-                }
-
-                if (command == "south" && _currentPlayer.CurrentRoom?.South != null)
-                {
-                    _currentPlayer.CurrentRoom = _currentPlayer.CurrentRoom.South;
-                    continue;
-                }
-
-                Console.WriteLine("Unknown command.");
-            }
+            RunGameLoop();
         }
 
         private SystemCommand RunAdventureMenu()
@@ -171,6 +185,17 @@ namespace EdiusPlayground.Adventure
         {
             WorldBuilder builder = new();
             _startingRoom = builder.BuildWorld();
+        }
+
+        private void DebugMessage(string message)
+        {
+            if (IsDebugMode)
+            {
+                ConsoleColor oldColor = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"DEBUG Info: {message}");
+                Console.ForegroundColor = oldColor;
+            }
         }
     }
 }
