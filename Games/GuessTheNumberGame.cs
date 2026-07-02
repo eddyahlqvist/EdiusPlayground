@@ -55,9 +55,6 @@ namespace EdiusPlayground.Games
         private int _score;
         private int _bestScore = 0;
 
-        // Debug
-        private const bool IsDebugMode = true;
-
         // Persistence
         private const string HighScoreFile = "GTN_highscore.txt";
 
@@ -111,8 +108,8 @@ namespace EdiusPlayground.Games
                             LoadHighScore();
                             _score = 100;
 
-                            DebugMessage($"Best score is {_bestScore}.");
-                            DebugMessage("Reset HighScore with 'c'.");
+                            DebugHelper.Write($"Best score is {_bestScore}.");
+                            DebugHelper.Write("Reset HighScore with 'c'.");
 
                             PrepareNewRound();
 
@@ -249,18 +246,7 @@ namespace EdiusPlayground.Games
         private int GenerateSecretNumber()
         {
             return _rnd.Next(_lowNumber, _highNumber + 1);
-        }
-
-        private void DebugMessage(string message)
-        {
-            if (IsDebugMode)
-            {
-                ConsoleColor oldColor = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"DEBUG Info: {message}");
-                Console.ForegroundColor = oldColor;
-            }
-        }
+        }        
 
         private GuessResult GetPlayerGuess(GameMode chosenMode)
         {
@@ -275,13 +261,13 @@ namespace EdiusPlayground.Games
                     return new GuessResult(null, SystemCommand.Back);
                 }
 
-                if (IsDebugMode && chosenMode == GameMode.LimitedTries)
+                if (App.IsDebugMode && chosenMode == GameMode.LimitedTries)
                 {
                     if (input.Trim().Equals("c", StringComparison.OrdinalIgnoreCase))
                     {
                         _bestScore = 0;
                         SaveHighScore();
-                        DebugMessage($"The HighScore have been reset. New score is {_bestScore}.");
+                        DebugHelper.Write($"The HighScore have been reset. New score is {_bestScore}.");
                         continue;
                     }
                 }
@@ -361,7 +347,7 @@ namespace EdiusPlayground.Games
         {
             _amountGuessed = 0;
             _secretNumber = GenerateSecretNumber();
-            DebugMessage($"Secret Number is {_secretNumber}.");
+            DebugHelper.Write($"Secret Number is {_secretNumber}.");
         }
 
         private void LoadHighScore()

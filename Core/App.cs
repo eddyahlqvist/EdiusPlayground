@@ -7,6 +7,8 @@ namespace EdiusPlayground.Core
 {
     internal class App
     {
+        public const bool IsDebugMode = true;
+
         private string _user = "Unknown";
 
         private readonly MainMenu _mainMenu;

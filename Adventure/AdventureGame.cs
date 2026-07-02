@@ -7,8 +7,6 @@ namespace EdiusPlayground.Adventure
 {
     internal class AdventureGame
     {
-        private const bool IsDebugMode = true;
-
         private Player? _currentPlayer;
         private Room? _startingRoom;
 
@@ -70,7 +68,7 @@ namespace EdiusPlayground.Adventure
 
                 if (currentRoom == null)
                 {                    
-                    DebugMessage("ERROR: Player CurrentRoom was null while inside the world. Resetting to starting room.");
+                    DebugHelper.Write("ERROR: Player CurrentRoom was null while inside the world. Resetting to starting room.");
 
                     ConsoleHelper.WriteLineColored(
                         "Something went wrong. Reality flickers, and you are returned to The Threshold.",
@@ -185,17 +183,6 @@ namespace EdiusPlayground.Adventure
         {
             WorldBuilder builder = new();
             _startingRoom = builder.BuildWorld();
-        }
-
-        private void DebugMessage(string message)
-        {
-            if (IsDebugMode)
-            {
-                ConsoleColor oldColor = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"DEBUG Info: {message}");
-                Console.ForegroundColor = oldColor;
-            }
         }
     }
 }

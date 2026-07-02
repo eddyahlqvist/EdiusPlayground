@@ -1,5 +1,6 @@
 ﻿using EdiusPlayground.Core;
 using EdiusPlayground.Menus;
+using EdiusPlayground.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,8 +11,6 @@ namespace EdiusPlayground.Tools
     {
         private const string ArchiveFile = "archive.txt";
         private List<string> _notes = new();
-
-        private const bool IsDebugMode = true;
         
         private enum ArchiveMode
         {
@@ -186,24 +185,13 @@ namespace EdiusPlayground.Tools
                 }
             }
 
-            DebugMessage($"Loaded {_notes.Count} notes from {ArchiveFile}.");
+            DebugHelper.Write($"Loaded {_notes.Count} notes from {ArchiveFile}.");
         }
 
         private void SaveNotes()
         {
             File.WriteAllLines(ArchiveFile, _notes);
-            DebugMessage($"Saved {_notes.Count} notes to {ArchiveFile}.");
-        }
-
-        private void DebugMessage(string message)
-        {
-            if (IsDebugMode)
-            {
-                ConsoleColor oldColor = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"DEBUG Info: {message}");
-                Console.ForegroundColor = oldColor;
-            }
-        }
+            DebugHelper.Write($"Saved {_notes.Count} notes to {ArchiveFile}.");
+        }        
     }
 }
