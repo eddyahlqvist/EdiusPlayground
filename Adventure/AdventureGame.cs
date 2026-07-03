@@ -7,8 +7,8 @@ namespace EdiusPlayground.Adventure
 {
     internal class AdventureGame
     {
+        private World? _world;
         private Player? _currentPlayer;
-        private Room? _startingRoom;
 
         public SystemCommand Run()
         {
@@ -74,7 +74,7 @@ namespace EdiusPlayground.Adventure
                         "Something went wrong. Reality flickers, and you are returned to The Threshold.",
                         ConsoleColor.Red);
 
-                    _currentPlayer!.CurrentRoom = _startingRoom;
+                    _currentPlayer!.CurrentRoom = _world?.StartingRoom;
 
                     currentRoom = _currentPlayer.CurrentRoom;
                 }
@@ -118,7 +118,7 @@ namespace EdiusPlayground.Adventure
 
             if (_currentPlayer.CurrentRoom == null)
             {
-                _currentPlayer.CurrentRoom = _startingRoom;
+                _currentPlayer.CurrentRoom = _world?.StartingRoom;
             }
 
             RunGameLoop();
@@ -168,7 +168,7 @@ namespace EdiusPlayground.Adventure
         private void ShowAdventureMenu()
         {
             Console.WriteLine();
-            Console.WriteLine("== Adventure MUD sim ==\n"); // come up with something better here
+            Console.WriteLine("== Adventure MUD sim ==\n");
 
             Console.WriteLine("1. New character: ");
             Console.WriteLine("2. Load character: ");
@@ -182,7 +182,7 @@ namespace EdiusPlayground.Adventure
         private void BuildWorld()
         {
             WorldBuilder builder = new();
-            _startingRoom = builder.BuildWorld();
+            _world = builder.BuildWorld();
         }
     }
 }
