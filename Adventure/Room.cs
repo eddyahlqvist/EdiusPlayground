@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace EdiusPlayground.Adventure
 {
     internal class Room
@@ -16,6 +18,18 @@ namespace EdiusPlayground.Adventure
         {
             Name = name;
             Description = description;
-        }       
+        }
+
+        public string GetExitShort()
+        {
+            List<string> exits = new();
+
+            if (North != null) exits.Add("n");
+            if (South != null) exits.Add("s");
+            if (East != null) exits.Add("e");
+            if (West != null) exits.Add("w");
+
+            return $"Exits: [{string.Join(", ", exits)}]";
+        }
     }
 }

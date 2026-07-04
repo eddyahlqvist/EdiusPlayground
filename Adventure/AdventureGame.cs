@@ -66,6 +66,11 @@ namespace EdiusPlayground.Adventure
             Console.WriteLine($"Current character: {name}");
         }
 
+        private void DisplayExits()
+        {            
+            Console.WriteLine(_player!.CurrentRoom!.GetExitShort());
+        }
+
         private void RunGameLoop()
         {
             while (true)
@@ -86,6 +91,7 @@ namespace EdiusPlayground.Adventure
                 }
 
                 Console.WriteLine();
+                DisplayExits();
                 Console.WriteLine(currentRoom?.Name);
                 Console.WriteLine(currentRoom?.Description);
 

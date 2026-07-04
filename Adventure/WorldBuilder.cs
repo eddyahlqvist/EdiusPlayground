@@ -18,7 +18,7 @@ namespace EdiusPlayground.Adventure
 
             // connect rooms
             threshold.North = hallway;
-            hallway.South = threshold;
+            hallway.South = threshold;            
 
             // package rooms
             List<Room> rooms = new()
