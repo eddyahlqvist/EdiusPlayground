@@ -10,11 +10,15 @@ namespace EdiusPlayground.Adventure
             // create rooms
             Room threshold = new(
                 "The Threshold",
-                "You stand in a quiet stone chamber.");
+                "You stand in a quiet stone chamber.",
+                x: 0, y: 0, z: 0
+                );
 
             Room hallway = new(
                 "The Hallway",
-                "A narrow hallway stretches into the gloom.");
+                "A narrow hallway stretches into the gloom.",
+                x:0, y: 1, z: 0
+                );
 
             // connect rooms
             threshold.North = hallway;

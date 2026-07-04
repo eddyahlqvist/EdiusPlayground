@@ -92,6 +92,9 @@ namespace EdiusPlayground.Adventure
 
                 Console.WriteLine();
                 DisplayExits();
+
+                DebugHelper.Write($"X:{currentRoom!.X}, Y:{currentRoom!.Y}, Z:{currentRoom!.Z}");
+
                 Console.WriteLine(currentRoom?.Name);
                 Console.WriteLine(currentRoom?.Description);
 
