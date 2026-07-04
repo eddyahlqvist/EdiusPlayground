@@ -8,11 +8,11 @@ namespace EdiusPlayground.Adventure
     internal class AdventureGame
     {
         private World? _world;
-        private Player? _currentPlayer;
+        private Player? _player;
 
         public SystemCommand Run()
         {
-            BuildWorld();
+            InitializeWorld();
 
             SystemCommand returnCommand = RunAdventureMenu();
 
@@ -44,10 +44,10 @@ namespace EdiusPlayground.Adventure
                     continue;
                 }
 
-                _currentPlayer = new Player(name);
+                InitializePlayer(name);
 
                 ConsoleHelper.WriteLineColored(
-                    $"Character created: {_currentPlayer.Name}",
+                    $"Character created: {_player?.Name}",
                     ConsoleColor.Cyan);
 
                 break;
@@ -56,7 +56,7 @@ namespace EdiusPlayground.Adventure
 
         private void DisplayCurrentCharacter()
         {
-            string name = _currentPlayer?.Name ?? "None";
+            string name = _player?.Name ?? "None";
             Console.WriteLine($"Current character: {name}");
         }
 
@@ -64,7 +64,7 @@ namespace EdiusPlayground.Adventure
         {
             while (true)
             {
-                Room? currentRoom = _currentPlayer?.CurrentRoom;
+                Room? currentRoom = _player?.CurrentRoom;
 
                 if (currentRoom == null)
                 {                    
@@ -74,9 +74,9 @@ namespace EdiusPlayground.Adventure
                         "Something went wrong. Reality flickers, and you are returned to The Threshold.",
                         ConsoleColor.Red);
 
-                    _currentPlayer!.CurrentRoom = _world?.StartingRoom;
+                    _player!.CurrentRoom = _world?.StartingRoom;
 
-                    currentRoom = _currentPlayer.CurrentRoom;
+                    currentRoom = _player.CurrentRoom;
                 }
 
                 Console.WriteLine();
@@ -92,15 +92,15 @@ namespace EdiusPlayground.Adventure
                     break;
                 }
 
-                if (command == "north" && _currentPlayer?.CurrentRoom?.North != null)
+                if (command == "north" && _player?.CurrentRoom?.North != null)
                 {
-                    _currentPlayer.CurrentRoom = _currentPlayer.CurrentRoom.North;
+                    _player.CurrentRoom = _player.CurrentRoom.North;
                     continue;
                 }
 
-                if (command == "south" && _currentPlayer?.CurrentRoom?.South != null)
+                if (command == "south" && _player?.CurrentRoom?.South != null)
                 {
-                    _currentPlayer.CurrentRoom = _currentPlayer.CurrentRoom.South;
+                    _player.CurrentRoom = _player.CurrentRoom.South;
                     continue;
                 }
 
@@ -110,15 +110,15 @@ namespace EdiusPlayground.Adventure
 
         private void EnterWorld()
         {
-            if (_currentPlayer == null)
+            if (_player == null)
             {
                 Console.WriteLine("No character loaded.");
                 return;
             }
 
-            if (_currentPlayer.CurrentRoom == null)
+            if (_player.CurrentRoom == null)
             {
-                _currentPlayer.CurrentRoom = _world?.StartingRoom;
+                _player.CurrentRoom = _world?.StartingRoom;
             }
 
             RunGameLoop();
@@ -179,7 +179,13 @@ namespace EdiusPlayground.Adventure
             Console.WriteLine("Q. Quit\n");
         }
 
-        private void BuildWorld()
+        private void InitializePlayer(string name)
+        {
+            PlayerBuilder builder = new();
+            _player = builder.BuildPlayer(name);
+        }
+
+        private void InitializeWorld()
         {
             WorldBuilder builder = new();
             _world = builder.BuildWorld();
