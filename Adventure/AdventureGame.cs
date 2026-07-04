@@ -12,6 +12,7 @@ namespace EdiusPlayground.Adventure
 
         private World? _world;
         private Player? _player;
+        private readonly CommandHandler _commandHandler = new();
 
         public SystemCommand Run()
         {
@@ -101,25 +102,13 @@ namespace EdiusPlayground.Adventure
                 Console.Write("> ");
 
                 string command = Console.ReadLine()?.Trim().ToLower() ?? "";
-
-                if (command == "exit")
+                
+                CommandResult result = _commandHandler.Handle(command, _player!);
+                
+                if (result == CommandResult.Exit)
                 {
                     break;
                 }
-
-                if (command == "north" && _player?.CurrentRoom?.North != null)
-                {
-                    _player.CurrentRoom = _player.CurrentRoom.North;
-                    continue;
-                }
-
-                if (command == "south" && _player?.CurrentRoom?.South != null)
-                {
-                    _player.CurrentRoom = _player.CurrentRoom.South;
-                    continue;
-                }
-
-                Console.WriteLine("Unknown command.");
             }
         }
 
