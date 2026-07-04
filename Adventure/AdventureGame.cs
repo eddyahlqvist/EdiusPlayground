@@ -2,16 +2,20 @@
 using EdiusPlayground.Helpers;
 using EdiusPlayground.Menus;
 using System;
+using System.IO;
 
 namespace EdiusPlayground.Adventure
 {
     internal class AdventureGame
     {
+        private const string PlayerFile = "player.txt";
+
         private World? _world;
         private Player? _player;
 
         public SystemCommand Run()
         {
+            LoadPlayerFile();
             InitializeWorld();
 
             SystemCommand returnCommand = RunAdventureMenu();
@@ -43,6 +47,8 @@ namespace EdiusPlayground.Adventure
                     Console.WriteLine("Please enter a character name.");
                     continue;
                 }
+
+                SavePlayerFile(name);
 
                 InitializePlayer(name);
 
@@ -189,6 +195,23 @@ namespace EdiusPlayground.Adventure
         {
             WorldBuilder builder = new();
             _world = builder.BuildWorld();
+        }
+
+        private void LoadPlayerFile()
+        {
+            if (!File.Exists(PlayerFile))
+            {
+                return;
+            }
+
+            string name = File.ReadAllText(PlayerFile).Trim();
+            InitializePlayer(name);
+
+        }
+
+        private void SavePlayerFile(string name)
+        {
+            File.WriteAllText(PlayerFile, name);
         }
     }
 }
