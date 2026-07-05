@@ -4,31 +4,34 @@ using System;
 namespace EdiusPlayground.Adventure
 {
     internal class CommandHandler
-    {    
-        public Direction GetDirection(string input)
+    {
+        public bool TryGetDirection(string input, out Direction direction)
         {
-            input = input.Trim().ToLowerInvariant();
-
             switch (input)
             {
                 case "north":
                 case "n":
-                    return Direction.North;
+                    direction = Direction.North;
+                    return true;
 
                 case "south":
-                case "s":                
-                    return Direction.South;
-
-                case "west":
-                case "w":
-                    return Direction.West;
+                case "s":
+                    direction = Direction.South;
+                    return true;
 
                 case "east":
                 case "e":
-                    return Direction.East;
+                    direction = Direction.East;
+                    return true;
+
+                case "west":
+                case "w":
+                    direction = Direction.West;
+                    return true;
 
                 default:
-                    return Direction.NoDirection;
+                    direction = default;
+                    return false;
             }
         }
 
@@ -44,10 +47,11 @@ namespace EdiusPlayground.Adventure
                 return CommandResult.Continue;
             }
         }
+
         public CommandResult HandleDirection(Direction dir, Player player)
         {
             switch (dir)
-            {               
+            {
                 case Direction.North:
                     if (player.CurrentRoom?.North != null)
                     {

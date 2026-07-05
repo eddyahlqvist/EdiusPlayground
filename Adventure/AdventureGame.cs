@@ -69,7 +69,7 @@ namespace EdiusPlayground.Adventure
         }
 
         private void DisplayExits()
-        {            
+        {
             Console.WriteLine(_player!.CurrentRoom!.GetExitShort());
         }
 
@@ -80,7 +80,7 @@ namespace EdiusPlayground.Adventure
                 Room? currentRoom = _player?.CurrentRoom;
 
                 if (currentRoom == null)
-                {                    
+                {
                     DebugHelper.Write("ERROR: Player CurrentRoom was null while inside the world. Resetting to starting room.");
 
                     ConsoleHelper.WriteLineColored(
@@ -104,27 +104,21 @@ namespace EdiusPlayground.Adventure
 
                 string command = Console.ReadLine()?.Trim().ToLower() ?? "";
 
-                Direction dir = _commandHandler.GetDirection(command);
+                CommandResult result;
 
-                if (dir == Direction.NoDirection)
+                if (_commandHandler.TryGetDirection(command, out Direction direction))
                 {
-                    CommandResult result = _commandHandler.HandleCommand(command);
-
-                    if (result == CommandResult.Exit)
-                    {
-                        break;
-                    }
+                    result = _commandHandler.HandleDirection(direction, _player!);
                 }
-
                 else
                 {
-                    CommandResult result = _commandHandler.HandleDirection(dir, _player!);
+                    result = _commandHandler.HandleCommand(command);
+                }
 
-                    if (result == CommandResult.Exit)
-                    {
-                        break;
-                    }
-                }                         
+                if (result == CommandResult.Exit)
+                {
+                    break;
+                }
             }
         }
 

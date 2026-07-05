@@ -5,7 +5,6 @@
         North,
         South,
         East,
-        West,
-        NoDirection
+        West
     }
 }
