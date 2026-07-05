@@ -1,5 +1,4 @@
-﻿using EdiusPlayground.Core;
-using System;
+﻿using System;
 
 namespace EdiusPlayground.Adventure
 {
@@ -48,62 +47,25 @@ namespace EdiusPlayground.Adventure
             }
         }
 
-        public CommandResult HandleDirection(Direction dir, Player player)
+        public CommandResult HandleDirection(Direction direction, Player player)
         {
-            switch (dir)
+            Room? nextRoom = direction switch
             {
-                case Direction.North:
-                    if (player.CurrentRoom?.North != null)
-                    {
-                        player.CurrentRoom = player.CurrentRoom.North;
-                    }
-                    else
-                    {
-                        Console.WriteLine("You can't go that way.");
-                    }
+                Direction.North => player.CurrentRoom?.North,
+                Direction.South => player.CurrentRoom?.South,
+                Direction.East => player.CurrentRoom?.East,
+                Direction.West => player.CurrentRoom?.West,
+                _ => null
+            };
 
-                    return CommandResult.Continue;
-
-                case Direction.South:
-                    if (player.CurrentRoom?.South != null)
-                    {
-                        player.CurrentRoom = player.CurrentRoom.South;
-                    }
-                    else
-                    {
-                        Console.WriteLine("You can't go that way.");
-                    }
-
-                    return CommandResult.Continue;
-
-                case Direction.East:
-                    if (player.CurrentRoom?.East != null)
-                    {
-                        player.CurrentRoom = player.CurrentRoom.East;
-                    }
-                    else
-                    {
-                        Console.WriteLine("You can't go that way.");
-                    }
-
-                    return CommandResult.Continue;
-
-                case Direction.West:
-                    if (player.CurrentRoom?.West != null)
-                    {
-                        player.CurrentRoom = player.CurrentRoom.West;
-                    }
-                    else
-                    {
-                        Console.WriteLine("You can't go that way.");
-                    }
-
-                    return CommandResult.Continue;
-
-                default:
-                    Console.WriteLine("Unknown command.");
-                    return CommandResult.Continue;
+            if (nextRoom == null)
+            {
+                Console.WriteLine("You can't go that way.");
+                return CommandResult.Continue;
             }
+
+            player.CurrentRoom = nextRoom;
+            return CommandResult.Continue;
         }
     }
 }
