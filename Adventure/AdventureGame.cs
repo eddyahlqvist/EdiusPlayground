@@ -102,17 +102,31 @@ namespace EdiusPlayground.Adventure
 
                 Console.Write("> ");
 
-                string command = Console.ReadLine()?.Trim().ToLower() ?? "";
+                string input = Console.ReadLine()?.Trim().ToLower() ?? "";
+                string verb;
+                string argument;
+                int firstSpace = input.IndexOf(' ');
+
+                if (firstSpace == -1)
+                {
+                    verb = input;
+                    argument = "";
+                }
+                else
+                {
+                    verb = input[..firstSpace];
+                    argument = input[(firstSpace + 1)..].Trim();
+                }
 
                 CommandResult result;
 
-                if (_commandHandler.TryGetDirection(command, out Direction direction))
+                if (_commandHandler.TryGetDirection(verb, out Direction direction))
                 {
                     result = _commandHandler.HandleDirection(direction, _player!);
                 }
                 else
                 {
-                    result = _commandHandler.HandleCommand(command, _player!);
+                    result = _commandHandler.HandleCommand(verb, argument, _player!);
                 }
 
                 if (result == CommandResult.Exit)

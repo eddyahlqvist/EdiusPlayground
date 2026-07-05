@@ -34,12 +34,17 @@ namespace EdiusPlayground.Adventure
             }
         }
 
-        public CommandResult HandleCommand(string command, Player player)
+        public CommandResult HandleCommand(string verb, string argument, Player player)
         {
-            switch (command)
+            switch (verb)
             {
                 case "look":
                     LookCommand(player);
+                    return CommandResult.Continue;
+
+                case "shout":
+                case "yell":
+                    ShoutCommand(verb, argument);
                     return CommandResult.Continue;
 
                 case "exit":
@@ -75,6 +80,31 @@ namespace EdiusPlayground.Adventure
         private void LookCommand(Player player)
         {
             Console.WriteLine(player.CurrentRoom!.Description);
+        }
+
+        private void ShoutCommand(string verb, string argument)
+        {            
+            if (verb == "shout" && argument == "")
+            {
+                Console.WriteLine("Shout what?");
+            }
+            else if (verb == "yell" && argument == "")
+            {
+                Console.WriteLine("Yell what?");
+            }
+            else
+            {
+                string output = argument.ToUpperInvariant();
+
+                if (verb == "yell")
+                {
+                    Console.WriteLine($"You yell loudly: {output}");
+                }
+                else
+                {
+                    Console.WriteLine($"You shout from the bottom of your lungs: {output}");
+                }
+            }            
         }
     }
 }
