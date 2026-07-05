@@ -1,18 +1,54 @@
-﻿using System;
+﻿using EdiusPlayground.Core;
+using System;
 
 namespace EdiusPlayground.Adventure
 {
     internal class CommandHandler
-    {        
-        public CommandResult Handle(string input, Player player)
+    {    
+        public Direction GetDirection(string input)
         {
+            input = input.Trim().ToLowerInvariant();
+
             switch (input)
             {
-                case "exit":
-                    return CommandResult.Exit;
-
                 case "north":
                 case "n":
+                    return Direction.North;
+
+                case "south":
+                case "s":                
+                    return Direction.South;
+
+                case "west":
+                case "w":
+                    return Direction.West;
+
+                case "east":
+                case "e":
+                    return Direction.East;
+
+                default:
+                    return Direction.NoDirection;
+            }
+        }
+
+        public CommandResult HandleCommand(string command)
+        {
+            if (command == "exit")
+            {
+                return CommandResult.Exit;
+            }
+
+            else
+            {
+                return CommandResult.Continue;
+            }
+        }
+        public CommandResult HandleDirection(Direction dir, Player player)
+        {
+            switch (dir)
+            {               
+                case Direction.North:
                     if (player.CurrentRoom?.North != null)
                     {
                         player.CurrentRoom = player.CurrentRoom.North;
@@ -24,8 +60,7 @@ namespace EdiusPlayground.Adventure
 
                     return CommandResult.Continue;
 
-                case "south":
-                case "s":
+                case Direction.South:
                     if (player.CurrentRoom?.South != null)
                     {
                         player.CurrentRoom = player.CurrentRoom.South;
@@ -37,8 +72,7 @@ namespace EdiusPlayground.Adventure
 
                     return CommandResult.Continue;
 
-                case "east":
-                case "e":
+                case Direction.East:
                     if (player.CurrentRoom?.East != null)
                     {
                         player.CurrentRoom = player.CurrentRoom.East;
@@ -50,8 +84,7 @@ namespace EdiusPlayground.Adventure
 
                     return CommandResult.Continue;
 
-                case "west":
-                case "w":
+                case Direction.West:
                     if (player.CurrentRoom?.West != null)
                     {
                         player.CurrentRoom = player.CurrentRoom.West;

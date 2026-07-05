@@ -103,13 +103,28 @@ namespace EdiusPlayground.Adventure
                 Console.Write("> ");
 
                 string command = Console.ReadLine()?.Trim().ToLower() ?? "";
-                
-                CommandResult result = _commandHandler.Handle(command, _player!);
-                
-                if (result == CommandResult.Exit)
+
+                Direction dir = _commandHandler.GetDirection(command);
+
+                if (dir == Direction.NoDirection)
                 {
-                    break;
-                }                
+                    CommandResult result = _commandHandler.HandleCommand(command);
+
+                    if (result == CommandResult.Exit)
+                    {
+                        break;
+                    }
+                }
+
+                else
+                {
+                    CommandResult result = _commandHandler.HandleDirection(dir, _player!);
+
+                    if (result == CommandResult.Exit)
+                    {
+                        break;
+                    }
+                }                         
             }
         }
 
