@@ -64,7 +64,8 @@ namespace EdiusPlayground.Adventure
         private void DisplayCurrentCharacter()
         {
             string name = _player?.Name ?? "None";
-            Console.WriteLine($"Current character: {name}");
+            Console.WriteLine();
+            ConsoleHelper.WriteLineColored($"Current character: {name}", ConsoleColor.Cyan);
         }
 
         private void DisplayExits()
@@ -108,7 +109,7 @@ namespace EdiusPlayground.Adventure
                 if (result == CommandResult.Exit)
                 {
                     break;
-                }
+                }                
             }
         }
 
