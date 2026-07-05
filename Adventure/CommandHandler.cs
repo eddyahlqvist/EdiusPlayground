@@ -34,16 +34,20 @@ namespace EdiusPlayground.Adventure
             }
         }
 
-        public CommandResult HandleCommand(string command)
+        public CommandResult HandleCommand(string command, Player player)
         {
-            if (command == "exit")
+            switch (command)
             {
-                return CommandResult.Exit;
-            }
+                case "look":
+                    LookCommand(player);
+                    return CommandResult.Continue;
 
-            else
-            {
-                return CommandResult.Continue;
+                case "exit":
+                    return CommandResult.Exit;
+
+                default:
+                    Console.WriteLine("Unknown command.");
+                    return CommandResult.Continue;
             }
         }
 
@@ -66,6 +70,11 @@ namespace EdiusPlayground.Adventure
 
             player.CurrentRoom = nextRoom;
             return CommandResult.Continue;
+        }
+
+        private void LookCommand(Player player)
+        {
+            Console.WriteLine(player.CurrentRoom!.Description);
         }
     }
 }

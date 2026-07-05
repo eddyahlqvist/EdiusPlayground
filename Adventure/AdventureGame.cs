@@ -112,7 +112,7 @@ namespace EdiusPlayground.Adventure
                 }
                 else
                 {
-                    result = _commandHandler.HandleCommand(command);
+                    result = _commandHandler.HandleCommand(command, _player!);
                 }
 
                 if (result == CommandResult.Exit)
