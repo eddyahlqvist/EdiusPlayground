@@ -39,12 +39,23 @@ namespace EdiusPlayground.Adventure
             switch (verb)
             {
                 case "look":
-                    LookCommand(player);
+                    LookCommand(argument, player);
+                    return CommandResult.Continue;
+
+                case "glance":
+                    GlanceCommand(player);
+                    return CommandResult.Continue;
+
+                case "yell":
+                    YellCommand(argument);
                     return CommandResult.Continue;
 
                 case "shout":
-                case "yell":
-                    ShoutCommand(verb, argument);
+                    ShoutCommand(argument);
+                    return CommandResult.Continue;
+
+                case "save":
+                    SaveCommand();
                     return CommandResult.Continue;
 
                 case "exit":
@@ -77,34 +88,57 @@ namespace EdiusPlayground.Adventure
             return CommandResult.Continue;
         }
 
-        private void LookCommand(Player player)
+        private void LookCommand(string argument, Player player)
         {
-            Console.WriteLine(player.CurrentRoom!.Description);
+            if (argument == "")
+            {
+                Console.WriteLine(player.CurrentRoom!.Description);
+            }
+            else if (argument == "me")
+            {
+                Console.WriteLine($"You see {player.Name}."); // this will be improved later when player class grows
+            }
+            else
+            {
+                Console.WriteLine($"You can't seem to find {argument}.");
+            }
         }
 
-        private void ShoutCommand(string verb, string argument)
-        {            
-            if (verb == "shout" && argument == "")
-            {
-                Console.WriteLine("Shout what?");
-            }
-            else if (verb == "yell" && argument == "")
+        private void GlanceCommand(Player player)
+        {
+            Console.WriteLine(player.CurrentRoom!.Name);
+        }
+
+        private void YellCommand(string argument)
+        {
+            if (argument == "")
             {
                 Console.WriteLine("Yell what?");
             }
             else
             {
                 string output = argument.ToUpperInvariant();
+                Console.WriteLine($"You yell loudly: {output}!!");
+            }
+        }
 
-                if (verb == "yell")
-                {
-                    Console.WriteLine($"You yell loudly: {output}");
-                }
-                else
-                {
-                    Console.WriteLine($"You shout from the bottom of your lungs: {output}");
-                }
-            }            
+        private void ShoutCommand(string argument)
+        {
+            if (argument == "")
+            {
+                Console.WriteLine("Shout what?");
+            }
+            else
+            {
+                string output = argument.ToUpperInvariant();
+                Console.WriteLine($"You shout from the bottom of your lungs: {output}");
+            }
+        }
+
+        private void SaveCommand()
+        {
+            // temporary fake save, will work on this later
+            Console.WriteLine("Saving...");
         }
     }
 }
