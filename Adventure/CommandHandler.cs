@@ -75,10 +75,10 @@ namespace EdiusPlayground.Adventure
         {
             Room? nextRoom = direction switch
             {
-                Direction.North => player.CurrentRoom?.North,
-                Direction.South => player.CurrentRoom?.South,
-                Direction.East => player.CurrentRoom?.East,
-                Direction.West => player.CurrentRoom?.West,
+                Direction.North => player.CurrentRoom.North,
+                Direction.South => player.CurrentRoom.South,
+                Direction.East => player.CurrentRoom.East,
+                Direction.West => player.CurrentRoom.West,
                 _ => null
             };
 
@@ -96,7 +96,7 @@ namespace EdiusPlayground.Adventure
         {
             if (argument == "")
             {
-                Console.WriteLine(player.CurrentRoom!.Description);
+                Console.WriteLine(player.CurrentRoom.Description);
             }
             else if (argument == "me")
             {
@@ -110,7 +110,7 @@ namespace EdiusPlayground.Adventure
 
         private void GlanceCommand(Player player)
         {
-            Console.WriteLine(player.CurrentRoom!.Name);
+            Console.WriteLine(player.CurrentRoom.Name);
         }
 
         private void YellCommand(string argument)
