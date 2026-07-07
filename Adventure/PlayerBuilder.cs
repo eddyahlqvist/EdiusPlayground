@@ -5,7 +5,8 @@ namespace EdiusPlayground.Adventure
     {
         public Player BuildPlayer(string name)
         {
-            return new Player(name);
+            const int StartingHP = 10;
+            return new Player(name, StartingHP);
         }
     }
 }

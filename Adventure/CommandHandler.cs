@@ -58,6 +58,10 @@ namespace EdiusPlayground.Adventure
                     SaveCommand();
                     return CommandResult.Continue;
 
+                case "score":
+                    ScoreCommand(player);
+                    return CommandResult.Continue;
+
                 case "exit":
                     return CommandResult.Exit;
 
@@ -133,6 +137,11 @@ namespace EdiusPlayground.Adventure
                 string output = argument.ToUpperInvariant();
                 Console.WriteLine($"You shout from the bottom of your lungs: {output}");
             }
+        }
+
+        private void ScoreCommand(Player player)
+        {
+            Console.WriteLine($"HP: {player.HP}");
         }
 
         private void SaveCommand()

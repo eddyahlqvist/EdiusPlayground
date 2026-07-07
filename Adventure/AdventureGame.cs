@@ -209,7 +209,7 @@ namespace EdiusPlayground.Adventure
 
         private void InitializePlayer(string name)
         {
-            PlayerBuilder builder = new();
+            PlayerBuilder builder = new();            
             _player = builder.BuildPlayer(name);
         }
 
