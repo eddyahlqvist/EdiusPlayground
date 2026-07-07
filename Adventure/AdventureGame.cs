@@ -114,11 +114,11 @@ namespace EdiusPlayground.Adventure
 
                 if (_commandHandler.TryGetDirection(verb, out Direction direction))
                 {
-                    result = _commandHandler.HandleDirection(direction, _player!);
+                    result = _commandHandler.HandleDirection(direction, _player);
                 }
                 else
                 {
-                    result = _commandHandler.HandleCommand(verb, argument, _player!);
+                    result = _commandHandler.HandleCommand(verb, argument, _player);
                 }
 
                 if (result == CommandResult.Exit)
