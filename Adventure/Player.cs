@@ -3,13 +3,14 @@
     internal class Player
     {
         public string Name { get; }
-        public Room? CurrentRoom { get; set; }
+        public Room CurrentRoom { get; set; }
         public int HP { get; set; }
 
-        public Player(string name, int hp)
+        public Player(string name, int hp, Room startingRoom)
         {
             Name = name;
             HP = hp;
+            CurrentRoom = startingRoom;
         }
     }
 }

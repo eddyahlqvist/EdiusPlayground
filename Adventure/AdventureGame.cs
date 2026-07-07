@@ -16,8 +16,8 @@ namespace EdiusPlayground.Adventure
 
         public SystemCommand Run()
         {
-            LoadPlayerFile();
             InitializeWorld();
+            LoadPlayerFile();            
 
             SystemCommand returnCommand = RunAdventureMenu();
 
@@ -68,37 +68,29 @@ namespace EdiusPlayground.Adventure
             ConsoleHelper.WriteLineColored($"Current character: {name}", ConsoleColor.Cyan);
         }
 
-        private void DisplayExits()
+        private void DisplayExits(Room currentRoom)
         {
-            Console.WriteLine(_player!.CurrentRoom!.GetExitShort());
+            Console.WriteLine(currentRoom.GetExitShort());
         }
 
         private void RunGameLoop()
         {
             while (true)
             {
-                Room? currentRoom = _player?.CurrentRoom;
-
-                if (currentRoom == null)
+                if (_player == null)
                 {
-                    DebugHelper.Write("ERROR: Player CurrentRoom was null while inside the world. Resetting to starting room.");
-
-                    ConsoleHelper.WriteLineColored(
-                        "Something went wrong. Reality flickers, and you are returned to The Threshold.",
-                        ConsoleColor.Red);
-
-                    _player!.CurrentRoom = _world?.StartingRoom;
-
-                    currentRoom = _player.CurrentRoom;
+                    return;
                 }
 
+                Room currentRoom = _player.CurrentRoom;
+
                 Console.WriteLine();
-                DisplayExits();
+                DisplayExits(currentRoom);
 
-                DebugHelper.Write($"X:{currentRoom!.X}, Y:{currentRoom!.Y}, Z:{currentRoom!.Z}");
+                DebugHelper.Write($"X:{currentRoom.X}, Y:{currentRoom.Y}, Z:{currentRoom.Z}");
 
-                Console.WriteLine(currentRoom?.Name);
-                Console.WriteLine(currentRoom?.Description);
+                Console.WriteLine(currentRoom.Name);
+                Console.WriteLine(currentRoom.Description);
 
                 Console.Write("> ");
 
@@ -142,11 +134,6 @@ namespace EdiusPlayground.Adventure
             {
                 Console.WriteLine("No character loaded.");
                 return;
-            }
-
-            if (_player.CurrentRoom == null)
-            {
-                _player.CurrentRoom = _world?.StartingRoom;
             }
 
             RunGameLoop();
@@ -210,7 +197,7 @@ namespace EdiusPlayground.Adventure
         private void InitializePlayer(string name)
         {
             PlayerBuilder builder = new();            
-            _player = builder.BuildPlayer(name);
+            _player = builder.BuildPlayer(name, _world!.StartingRoom);
         }
 
         private void InitializeWorld()
